@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- QuickDock runs in the App Sandbox. -->
+	<key>com.apple.security.app-sandbox</key>
+	<true/>
+	<!-- Access only to files and folders the user explicitly chooses (open/save panels, drag and drop).
+	     Read-write is needed only so "Export Configuration…" can save the file the user names. -->
+	<key>com.apple.security.files.user-selected.read-write</key>
+	<true/>
+	<!-- Keep access to chosen items across launches via security-scoped bookmarks. -->
+	<key>com.apple.security.files.bookmarks.app-scope</key>
+	<true/>
+	<!-- Intentionally absent: network client/server, camera, microphone, contacts, location,
+	     Apple Events automation, Accessibility. -->
+</dict>
+</plist>

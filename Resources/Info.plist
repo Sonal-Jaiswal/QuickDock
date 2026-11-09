@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleExecutable</key>
+	<string>QuickDock</string>
+	<key>CFBundleIconFile</key>
+	<string>AppIcon</string>
+	<key>CFBundleIdentifier</key>
+	<string>__BUNDLE_ID__</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>QuickDock</string>
+	<key>CFBundleDisplayName</key>
+	<string>QuickDock</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>__VERSION__</string>
+	<key>CFBundleVersion</key>
+	<string>__BUILD__</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>13.0</string>
+	<key>LSUIElement</key>
+	<true/>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.productivity</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>© __YEAR__ __COPYRIGHT__. MIT License.</string>
+	<key>QDRepositoryURL</key>
+	<string>__REPO_URL__</string>
+	<key>QDWebsiteURL</key>
+	<string>__WEBSITE_URL__</string>
+	<key>QDSupportEmail</key>
+	<string>__SUPPORT_EMAIL__</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<!-- Lets users drop files, folders and apps onto QuickDock's icon (or use
+			     Open With) to add them. Rank "None" means QuickDock never becomes a default app. -->
+			<key>CFBundleTypeName</key>
+			<string>Item to Add to QuickDock</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>None</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.item</string>
+				<string>public.folder</string>
+			</array>
+		</dict>
+	</array>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeIdentifier</key>
+			<string>__BUNDLE_ID__.configuration</string>
+			<key>UTTypeDescription</key>
+			<string>QuickDock Configuration</string>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.json</string>
+			</array>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>quickdock</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

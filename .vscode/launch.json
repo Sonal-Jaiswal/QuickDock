@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:DMGSS}",
+            "name": "Debug QuickDock",
+            "target": "QuickDock",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug QuickDock"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:DMGSS}",
+            "name": "Release QuickDock",
+            "target": "QuickDock",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release QuickDock"
+        }
+    ]
+}
