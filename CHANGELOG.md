@@ -5,6 +5,12 @@ All notable changes to QuickDock are documented here. The format follows
 
 ## [Unreleased]
 
+## [Unreleased]
+
+### Fixed
+- Quick Wheel: the hold now follows the ⌥ key, not Tab. Before, letting Tab up a moment late closed the wheel, letting go of ⌥ didn't open the chosen app, and tapping Tab again to cycle closed the wheel.
+- The wheel's buttons no longer take keyboard focus, so pressing Space can't clear the clipboard history by accident.
+
 ## [0.9.0] - 2026-11-09
 
 First public early-access build (unsigned, not notarized).

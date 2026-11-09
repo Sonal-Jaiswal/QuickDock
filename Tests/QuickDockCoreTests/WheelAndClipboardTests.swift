@@ -63,6 +63,25 @@ struct WheelLayoutTests {
     }
 }
 
+@Suite("Quick Wheel hold gesture")
+struct WheelHoldTests {
+    @Test("Letting go with a slot highlighted opens it, however long the hold")
+    func opensHighlighted() {
+        #expect(WheelLayout.holdOutcome(highlighted: 2, heldFor: 0.1) == .open(2))
+        #expect(WheelLayout.holdOutcome(highlighted: 0, heldFor: 5) == .open(0))
+    }
+
+    @Test("A quick tap with nothing highlighted keeps the wheel open")
+    func tapStaysOpen() {
+        #expect(WheelLayout.holdOutcome(highlighted: nil, heldFor: 0.2) == .stayOpen)
+    }
+
+    @Test("A long hold with nothing highlighted cancels")
+    func longHoldCancels() {
+        #expect(WheelLayout.holdOutcome(highlighted: nil, heldFor: 1.0) == .cancel)
+    }
+}
+
 @Suite("Clipboard history")
 struct ClipboardHistoryTests {
     @Test("Records newest first and moves repeats to the top")

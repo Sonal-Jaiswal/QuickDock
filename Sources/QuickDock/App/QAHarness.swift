@@ -445,9 +445,9 @@ final class QAHarness {
         env.clipboard.poll()
         check("Password-manager copy is ignored", !env.clipboard.history.entries.contains { $0.text == "hunter2" }, "")
         env.clipboard.eraseAll()
-        for (text, source) in [("https://github.com/quickdock/quickdock/releases", "Safari"),
+        for (text, source) in [("https://quickdock.sonal-jaiswal.tech", "Safari"),
                                ("Meeting moved to 3:30 — same room.", "Messages"),
-                               ("brew install --cask quickdock", "Terminal"),
+                               ("git pull --rebase origin main", "Terminal"),
                                ("Thanks for the feedback! I’ll send the updated draft by Friday.", "Mail"),
                                ("#4C8DFF", "Figma"),
                                ("SELECT name, opened_at FROM items ORDER BY opened_at DESC LIMIT 10;", "TablePlus")].reversed() {
@@ -459,6 +459,9 @@ final class QAHarness {
         let screen = NSScreen.main!.visibleFrame
         let center = NSPoint(x: screen.midX, y: screen.midY)
         let originalMouse = NSEvent.mouseLocation
+        // Simulated modifier keys, so holding ⌥ can be tested without a keyboard.
+        var simulated: NSEvent.ModifierFlags = [.option]
+        wheel.modifierState = { simulated }
         wheel.show(at: center, holding: true)
         await pause(0.4)
         // Key focus is impossible while the Mac's screen is locked (frontmost app: loginwindow).
@@ -482,26 +485,45 @@ final class QAHarness {
         warp(NSPoint(x: wc.x + 5, y: wc.y + 5)); await pause(0.25)
         check("Centre dead zone clears highlight", wheel.model.highlighted == nil, "")
 
-        // Hold → flick up → release opens Finder (harmless: activates Finder)
+        // Hold ⌥, tap Tab, flick up, let go of ⌥: opens Finder (harmless: activates Finder)
+        wheel.hotKeyReleased(); await pause(0.5) // Tab comes up long before ⌥
+        check("Tab coming up while ⌥ is held keeps the wheel open", wheel.isVisible, "")
         warp(NSPoint(x: wc.x, y: wc.y + 140)); await pause(0.25)
-        wheel.hotKeyReleased(); await pause(0.8)
-        check("Release opens the highlighted item", !wheel.isVisible && env.library.item(withID: finderID!)?.openCount == 1,
+        check("Flick still highlights after Tab is up", wheel.model.highlighted == 0, "\(String(describing: wheel.model.highlighted))")
+        simulated = []; await pause(0.8)
+        check("Letting go of ⌥ opens the highlighted item", !wheel.isVisible && env.library.item(withID: finderID!)?.openCount == 1,
               "visible=\(wheel.isVisible) count=\(env.library.item(withID: finderID!)?.openCount ?? -1)")
 
-        // Tap mode: quick release without a highlight keeps the wheel open
+        // Tap mode: quick ⌥Tab without a highlight keeps the wheel open
         warp(center)
-        wheel.show(at: center, holding: true); await pause(0.1)
-        wheel.hotKeyReleased(); await pause(0.3)
+        simulated = [.option]
+        wheel.show(at: center, holding: true); await pause(0.05)
+        wheel.hotKeyReleased(); simulated = []; await pause(0.3)
         check("Quick tap keeps the wheel open", wheel.isVisible, "")
         postKey(KeyCodes.escape, to: wheel.panelReference); await pause(0.3)
         check("Escape closes the wheel", !wheel.isVisible, "")
 
-        // ⌥Tab cycling while held, then number key
+        // Long hold of ⌥ without choosing cancels
+        simulated = [.option]
+        wheel.show(at: center, holding: true); await pause(0.1)
+        wheel.hotKeyReleased(); await pause(0.5)
+        simulated = []; await pause(0.3)
+        check("Holding ⌥ without choosing, then letting go, closes the wheel", !wheel.isVisible, "")
+
+        // ⌥ held, Tab tapped repeatedly cycles (the release of each Tab must not end the hold)
+        simulated = [.option]
         wheel.show(at: center, holding: true); await pause(0.2)
-        wheel.hotKeyPressed(); wheel.hotKeyPressed()
-        check("Pressing the shortcut again cycles slots", wheel.model.highlighted == 1, "\(String(describing: wheel.model.highlighted))")
+        wheel.hotKeyReleased(); wheel.hotKeyPressed(); wheel.hotKeyReleased(); wheel.hotKeyPressed(); wheel.hotKeyReleased()
+        await pause(0.1)
+        check("Tapping Tab again while holding ⌥ cycles slots", wheel.isVisible && wheel.model.highlighted == 1, "visible=\(wheel.isVisible) \(String(describing: wheel.model.highlighted))")
+        wheel.cycle(forward: false) // back to slot 1 (Finder), so the test only ever opens Finder
+        simulated = []; await pause(0.6)
+        check("Letting go of ⌥ after cycling opens that slot", !wheel.isVisible && env.library.item(withID: finderID!)?.openCount == 2,
+              "count=\(env.library.item(withID: finderID!)?.openCount ?? -1)")
+        wheel.show(at: center, holding: false); await pause(0.3)
         postKey(KeyCodes.one, characters: "1", to: wheel.panelReference); await pause(0.8)
-        check("Number key 1 opens slot 1", !wheel.isVisible && env.library.item(withID: finderID!)?.openCount == 2, "")
+        check("Number key 1 opens slot 1", !wheel.isVisible && env.library.item(withID: finderID!)?.openCount == 3,
+              "count=\(env.library.item(withID: finderID!)?.openCount ?? -1)")
 
         // Screenshots
         for (mode, label) in [(AppearanceMode.dark, "dark"), (.light, "light")] {

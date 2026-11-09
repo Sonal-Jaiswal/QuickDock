@@ -58,12 +58,14 @@ were made: they are real captures of the running app, not mockups.
 - ✅ Shows 8 slots, favorites first, topped up with most-used apps; running apps marked
 - ✅ **Real pointer tracking:** with the cursor warped above the centre slot 1 highlights, to the right slot 3 highlights, and in the centre (dead zone) nothing is highlighted
 - ✅ Hold, flick up, then release opens the highlighted item (Finder; open count recorded)
-- ✅ A quick tap keeps the wheel open; Escape closes it; pressing the shortcut again while held cycles slots; number key 1 opens slot 1
+- ✅ A quick tap keeps the wheel open; Escape closes it; number key 1 opens slot 1
+- ✅ (after a user report, 2026-11-09) Tab coming up while ⌥ is still held keeps the wheel open; letting go of ⌥ opens the highlighted app; holding ⌥ without choosing cancels; tapping Tab repeatedly while ⌥ is held cycles. ⌥ is simulated in the harness (synthetic key events need Accessibility); the code reads `NSEvent.modifierFlags`, which needs no permission.
+- ✅ Wheel visible **and key** (verified with the screen unlocked); its buttons don't take keyboard focus
 - ✅ Clipboard monitor records a copy and **ignores** a copy marked `org.nspasteboard.ConcealedType` (tested on a private pasteboard, never the real clipboard)
 - ✅ History ordering, de-duplication, pinning, limits, oversized/empty text, search and persistence (unit tests)
 - ✅ Wheel and clipboard preferences persist; old configuration exports still import; the wheel shortcut can't duplicate the launcher's
 - 🟡 **Visuals:** the wheel was captured by rendering the real view hierarchy in-process, because the Mac's screen was locked during this session and the window server doesn't composite windows while locked. The layout, icons, highlight and clipboard panel are verified; the system glass blur is not shown in those images. The website caption says so.
-- ⬜ **Keyboard focus of the wheel (and launcher) couldn't be re-checked while the screen was locked.** The frontmost app was loginwindow, so no app can become key. The launcher's focus check passed earlier while the session was unlocked, and the wheel uses the same panel class and focus call. **Please verify:** hold ⌥Tab, then press Escape or 1.
+- ~~⬜ Keyboard focus of the wheel (and launcher) couldn't be re-checked while the screen was locked.~~ Re-checked unlocked: both pass (wheel 18/0, full 47/0). The frontmost app was loginwindow, so no app can become key. The launcher's focus check passed earlier while the session was unlocked, and the wheel uses the same panel class and focus call. **Please verify:** hold ⌥Tab, then press Escape or 1.
 - ⬜ A physical ⌥Tab press (Carbon press/release events). Release handling is exercised by calling the same handlers.
 - ⬜ Reading the **real** clipboard. On macOS 15.4+ the first read may show Apple's permission alert. The settings screen shows guidance when access is set to Ask or Deny.
 

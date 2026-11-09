@@ -42,6 +42,10 @@ final class WheelController: NSObject, NSWindowDelegate {
     private var center = NSPoint.zero
     private var shownAt = Date.distantPast
     private var isHolding = false
+    /// The shortcut's modifier keys (⌥ for ⌥Tab). The hold lasts while they're down.
+    private var holdModifiers: NSEvent.ModifierFlags = []
+    /// Current modifier keys. Replaceable so the QA harness can simulate holding ⌥.
+    var modifierState: () -> NSEvent.ModifierFlags = { NSEvent.modifierFlags }
     /// Set when the keyboard picked a slot; pointer moves of more than a few points take over again.
     private var keyboardAnchor: NSPoint?
     private var clipboardOnLeft = false
@@ -81,15 +85,32 @@ final class WheelController: NSObject, NSWindowDelegate {
         show(at: NSEvent.mouseLocation, holding: true)
     }
 
+    /// Called when the shortcut's main key (Tab) comes up. With ⌥ still held this is not the
+    /// end of the gesture: the user may tap Tab again to cycle, or flick and then let go of ⌥.
+    /// The hold ends when the modifiers are released (see `trackPointer`). Only a shortcut
+    /// without modifiers ends here.
     func hotKeyReleased() {
-        guard panel.isVisible, isHolding else { return }
+        guard panel.isVisible, isHolding, holdModifiers.isEmpty else { return }
+        finishHold()
+    }
+
+    private func finishHold() {
         isHolding = false
-        if model.highlighted != nil {
-            openHighlighted()
-        } else if Date().timeIntervalSince(shownAt) > 0.35 {
-            hide() // held without choosing: cancel
+        switch WheelLayout.holdOutcome(highlighted: model.highlighted, heldFor: Date().timeIntervalSince(shownAt)) {
+        case .open: openHighlighted()
+        case .cancel: hide()
+        case .stayOpen: break // a quick tap leaves the wheel open for clicking
         }
-        // A quick tap leaves the wheel open for clicking.
+    }
+
+    private static func modifierFlags(for combo: KeyCombo?) -> NSEvent.ModifierFlags {
+        guard let modifiers = combo?.modifiers else { return [] }
+        var flags: NSEvent.ModifierFlags = []
+        if modifiers.contains(.command) { flags.insert(.command) }
+        if modifiers.contains(.option) { flags.insert(.option) }
+        if modifiers.contains(.control) { flags.insert(.control) }
+        if modifiers.contains(.shift) { flags.insert(.shift) }
+        return flags
     }
 
     // MARK: Showing
@@ -106,6 +127,7 @@ final class WheelController: NSObject, NSWindowDelegate {
         model.highlighted = nil
         model.hubMessage = nil
         isHolding = holding
+        holdModifiers = holding ? Self.modifierFlags(for: env.wheelHotKeys.currentCombo ?? env.preferences.wheelHotKey) : []
         keyboardAnchor = nil
         shownAt = Date()
 
@@ -163,6 +185,12 @@ final class WheelController: NSObject, NSWindowDelegate {
     }
 
     private func trackPointer() {
+        // Reading the modifier state needs no Accessibility or Input Monitoring permission.
+        if isHolding && !holdModifiers.isEmpty
+            && !modifierState().intersection(.deviceIndependentFlagsMask).isSuperset(of: holdModifiers) {
+            finishHold()
+            return
+        }
         let mouse = NSEvent.mouseLocation
         if let anchor = keyboardAnchor {
             guard hypot(mouse.x - anchor.x, mouse.y - anchor.y) > 12 else { return }

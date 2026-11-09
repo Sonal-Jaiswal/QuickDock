@@ -169,11 +169,13 @@ private struct ClipboardPanel: View {
                 if preferences.clipboardHistoryEnabled && !clipboard.history.entries.isEmpty {
                     Button { clipboard.clear() } label: { Image(systemName: "trash") }
                         .buttonStyle(.plain).foregroundStyle(.secondary)
+                        .focusable(false)
                         .help("Clear history (pinned items stay)")
                         .accessibilityLabel("Clear clipboard history")
                 }
                 Button { model.controller?.openSettings() } label: { Image(systemName: "gearshape") }
                     .buttonStyle(.plain).foregroundStyle(.secondary)
+                    .focusable(false)
                     .help("Wheel & Clipboard settings")
                     .accessibilityLabel("Wheel and clipboard settings")
             }
@@ -197,6 +199,7 @@ private struct ClipboardPanel: View {
                     .font(.system(size: 11)).foregroundStyle(.secondary).multilineTextAlignment(.center)
                 Button("Turn On Clipboard History") { preferences.clipboardHistoryEnabled = true }
                     .controlSize(.small)
+                    .focusable(false)
             }
             .padding(20)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -260,6 +263,7 @@ private struct ClipboardRow: View {
                         .help("Remove").accessibilityLabel("Remove")
                 }
                 .buttonStyle(.plain)
+                .focusable(false)
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundStyle(.secondary)
             }

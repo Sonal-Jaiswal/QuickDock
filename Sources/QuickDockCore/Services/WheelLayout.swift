@@ -68,4 +68,25 @@ public enum WheelLayout {
         let width = 2 * .pi / Double(count)
         return Int((angle + width / 2) / width) % count
     }
+
+    /// What happens when the user lets go of the shortcut's modifier keys (for ⌥Tab, the ⌥ key).
+    ///
+    /// Carbon reports the shortcut "released" when the *main* key (Tab) comes up, which is
+    /// usually long before ⌥ is released, so the wheel follows the modifiers instead.
+    public enum HoldOutcome: Equatable, Sendable {
+        /// Open or switch to this slot.
+        case open(Int)
+        /// Held for a while without choosing anything: close the wheel.
+        case cancel
+        /// A quick tap: keep the wheel open for clicking or the keyboard.
+        case stayOpen
+    }
+
+    /// Holds shorter than this count as a tap.
+    public static let tapThreshold: Double = 0.35
+
+    public static func holdOutcome(highlighted: Int?, heldFor seconds: Double) -> HoldOutcome {
+        if let highlighted { return .open(highlighted) }
+        return seconds > tapThreshold ? .cancel : .stayOpen
+    }
 }
