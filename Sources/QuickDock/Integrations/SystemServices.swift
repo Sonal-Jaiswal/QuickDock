@@ -66,6 +66,7 @@ enum AppInfo {
     /// Optional links configured at build time (see `config/release.env`). Empty values are hidden.
     static var websiteURL: URL? { configuredURL("QDWebsiteURL") }
     static var repositoryURL: URL? { configuredURL("QDRepositoryURL") }
+    static var donationURL: URL? { configuredURL("QDDonationURL") }
     static var supportEmail: String? {
         guard let value = Bundle.main.object(forInfoDictionaryKey: "QDSupportEmail") as? String,
               PredefinedAction.isPlausibleEmail(value) else { return nil }

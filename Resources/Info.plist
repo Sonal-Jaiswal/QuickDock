@@ -38,6 +38,8 @@
 	<string>$(QD_REPOSITORY_URL)</string>
 	<key>QDWebsiteURL</key>
 	<string>$(QD_WEBSITE_URL)</string>
+	<key>QDDonationURL</key>
+	<string>$(QD_DONATION_URL)</string>
 	<key>QDSupportEmail</key>
 	<string>$(QD_SUPPORT_EMAIL)</string>
 	<key>CFBundleDocumentTypes</key>

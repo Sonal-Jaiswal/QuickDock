@@ -23,20 +23,8 @@ ARCHS="${ARCHS:-arm64}"
 APP="$ROOT/build/QuickDock.app"
 
 # --- Choose an SDK -----------------------------------------------------------
-# Command Line Tools ship without SwiftUI's macro plugin. Newer SDKs implement
-# @State as a macro, so with CLT we pick the newest SDK that doesn't need it.
-if [[ -z "${SDKROOT:-}" ]]; then
-  DEV_DIR="$(xcode-select -p)"
-  if [[ "$DEV_DIR" == *CommandLineTools* ]]; then
-    for sdk in $(ls -d "$DEV_DIR"/SDKs/MacOSX[0-9]*.sdk 2>/dev/null | sort -V -r); do
-      if ! grep -rqs "StateMacro" "$sdk/System/Library/Frameworks/SwiftUICore.framework/Versions/A/Modules/SwiftUICore.swiftmodule/arm64e-apple-macos.swiftinterface"; then
-        export SDKROOT="$sdk"
-        break
-      fi
-    done
-  fi
-fi
-[[ -n "${SDKROOT:-}" ]] && echo "▸ SDK: $SDKROOT"
+# shellcheck source=select-sdk.sh
+source scripts/select-sdk.sh
 
 # --- Compile -------------------------------------------------------------------
 ARCH_FLAGS=()
@@ -59,6 +47,7 @@ sed -e "s|\$(PRODUCT_BUNDLE_IDENTIFIER)|$(escape "$BUNDLE_ID")|g" \
     -e "s|\$(QD_COPYRIGHT)|© $(date +%Y) $(escape "$COPYRIGHT_HOLDER"). MIT License.|g" \
     -e "s|\$(QD_REPOSITORY_URL)|$(escape "$REPO_URL")|g" \
     -e "s|\$(QD_WEBSITE_URL)|$(escape "$WEBSITE_URL")|g" \
+    -e "s|\$(QD_DONATION_URL)|$(escape "${DONATION_URL:-}")|g" \
     -e "s|\$(QD_SUPPORT_EMAIL)|$(escape "$SUPPORT_EMAIL")|g" \
     Resources/Info.plist > "$APP/Contents/Info.plist"
 if grep -q '\$(' "$APP/Contents/Info.plist"; then

@@ -105,7 +105,9 @@ Website deployment: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). Donations setup: [
 ## Support the project
 
 QuickDock is free and independent. Voluntary donations help fund the $99/year Apple Developer Program,
-so that future releases can be signed and notarized. See the website's Support section.
+so that future releases can be signed and notarized.
+
+**[♥ Sponsor QuickDock on GitHub](https://github.com/sponsors/Sonal-Jaiswal)**
 
 ## License
 

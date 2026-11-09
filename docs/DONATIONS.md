@@ -1,29 +1,25 @@
-# Setting up donations
+# Donations
 
-The website's Support section never shows a donate button, link or total that isn't real.
+QuickDock accepts voluntary donations through **GitHub Sponsors**:
+<https://github.com/sponsors/Sonal-Jaiswal>
 
-## 1. Create an account with a provider
-Pick one that suits you (all have free tiers; fees vary):
-- **GitHub Sponsors** — <https://github.com/sponsors> (requires approval; integrates with the repo).
-- **Ko-fi** — <https://ko-fi.com>
-- **Buy Me a Coffee** — <https://buymeacoffee.com>
+Where it appears:
+- the website's Support section (`website/src/config/site.ts` → `donation`)
+- the **Sponsor** button on the GitHub repository (`.github/FUNDING.yml`)
+- **Support QuickDock** in the app's About screen (`DONATION_URL` in `config/release.env`, and `QD_DONATION_URL` in `project.yml`)
 
-## 2. Configure the website
-Edit `website/src/config/site.ts`:
-```ts
-donation: {
-  provider: "Ko-fi",                       // shown as “Donate with Ko-fi”
-  url: "https://ko-fi.com/your-page",       // must be https://
-  goalUSD: 99,
-  raisedUSD: null,                          // leave null until you have a verified figure
-  raisedAsOf: "",
-},
-```
-- With `url` empty, production builds show “Donations will open soon” and **no button**; development builds show a
-  clearly marked setup notice.
-- Only set `raisedUSD` from the provider's own dashboard, and set `raisedAsOf` to the date you checked. Update it manually
-  (no third-party script or API is used, keeping the site free of trackers).
+Leave any of these empty to hide that link. Never put a placeholder or unverified URL in them.
 
-## 3. Optional
-- Add `.github/FUNDING.yml` so GitHub shows a Sponsor button, e.g. `ko_fi: your-page` or `github: [your-username]`.
-- Keep the wording honest: donations are voluntary, don't buy a subscription, license or guaranteed feature.
+## Rules
+- Donations are voluntary. They don't buy a licence, subscription or guaranteed feature, and the wording must say so.
+- Never publish bank account numbers, UPI IDs or IFSC codes on the website or in the repository. Payouts go through the provider.
+- Only set `raisedUSD` from the GitHub Sponsors dashboard, with `raisedAsOf` set to the date you checked. `null` hides the total.
+
+## Notes for a maintainer in India
+These are not tax advice. Check the current rules with a chartered accountant.
+- GitHub Sponsors pays out to a bank account through Stripe Connect, in INR. Keep the payout bank details and tax form up to date in the Sponsors dashboard.
+- Incoming foreign payments are received as export of services. Your bank may ask for a purpose code or a FIRC/e-FIRA (foreign inward remittance certificate) for each payout. Keep these for income tax filing.
+- Sponsorship income is taxable income. If you later sell a paid version, GST and invoicing rules may apply.
+
+## Adding another provider later
+Ko-fi, Buy Me a Coffee, Razorpay Payment Pages (good for Indian UPI/cards) or Lemon Squeezy and Gumroad (for paid or pay-what-you-want sales) can be added. Point `donation.url` at the one you want the website button to use, and add extra entries to `.github/FUNDING.yml` (for example `ko_fi: your-page` or `custom: ["https://…"]`).

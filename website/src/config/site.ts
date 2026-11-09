@@ -27,9 +27,9 @@ export const site = {
   /** Voluntary donations. See docs/DONATIONS.md. */
   donation: {
     /** Display name of the provider, e.g. "GitHub Sponsors", "Ko-fi", "Buy Me a Coffee". */
-    provider: "",
+    provider: "GitHub Sponsors",
     /** The real donation page URL (https). Empty = no donate button is published. */
-    url: "",
+    url: "https://github.com/sponsors/Sonal-Jaiswal",
     /** First-year goal: Apple Developer Program membership. */
     goalUSD: 99,
     /**

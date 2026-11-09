@@ -7,6 +7,9 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+# shellcheck source=select-sdk.sh
+source scripts/select-sdk.sh
+
 EXTRA=()
 DEV_DIR="$(xcode-select -p 2>/dev/null || true)"
 PLUGIN_DIR="$DEV_DIR/usr/lib/swift/host/plugins/testing"

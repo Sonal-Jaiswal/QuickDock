@@ -303,6 +303,14 @@ private struct AboutSettings: View {
                 }
                 .font(.callout)
 
+                if let url = AppInfo.donationURL {
+                    Link(destination: url) {
+                        Label("Support QuickDock", systemImage: "heart.fill")
+                    }
+                    .font(.callout.weight(.medium))
+                    .help("Optional donations help pay for Apple code signing")
+                }
+
                 Text("Released under the MIT License. © 2026 The QuickDock Authors.")
                     .font(.caption).foregroundStyle(.secondary)
             }
