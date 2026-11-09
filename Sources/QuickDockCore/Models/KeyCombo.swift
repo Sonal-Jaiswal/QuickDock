@@ -47,8 +47,9 @@ public struct KeyCombo: Codable, Equatable, Hashable, Sendable {
     /// Used if Option + Space is already taken: Control + Option + Space.
     public static let fallbackLauncher = KeyCombo(keyCode: KeyCodes.space, modifiers: [.control, .option])
 
-    /// Option + Tab: hold to show the Quick Wheel, release to open the highlighted item.
-    public static let defaultWheel = KeyCombo(keyCode: KeyCodes.tab, modifiers: [.option])
+    /// Control + Option + Tab: hold to show the Quick Wheel, release to open the highlighted item.
+    /// (Plain ⌥Tab is not delivered to apps by current macOS; see `validate()`.)
+    public static let defaultWheel = KeyCombo(keyCode: KeyCodes.tab, modifiers: [.control, .option])
 
     /// A display string such as "⌥Space". `keyName` lets the app supply a
     /// layout-aware name for the key; it falls back to US-layout names.
@@ -79,6 +80,11 @@ public struct KeyCombo: Codable, Equatable, Hashable, Sendable {
         }
         if keyCode == KeyCodes.escape || keyCode == KeyCodes.tab && modifiers.contains(.command) {
             return .invalid("\(displayString) is reserved by macOS.")
+        }
+        // Registering ⌥Tab (or ⌥⇧Tab) succeeds, but current macOS never delivers the key press;
+        // it goes to the frontmost app instead. Seen on macOS 27, where ⌥Space still works.
+        if keyCode == KeyCodes.tab && modifiers.subtracting(.shift) == .option {
+            return .invalid("macOS doesn’t pass \(displayString) to apps. Add ⌃ Control, for example ⌃⌥Tab.")
         }
         // ⌘ or ⌘⇧ with a letter, digit or punctuation would override everyday app shortcuts (⌘Q, ⌘C…).
         if modifiers.subtracting(.shift) == .command && !isFunctionKey && keyCode != KeyCodes.space {

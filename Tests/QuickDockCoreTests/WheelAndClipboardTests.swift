@@ -182,6 +182,22 @@ struct WheelPreferencesTests {
         #expect(snapshot.hotKey == .defaultLauncher)
     }
 
+    @Test("Default wheel shortcut is ⌃⌥Tab; a saved ⌥Tab moves to it")
+    func optionTabMigrates() throws {
+        #expect(KeyCombo.defaultWheel.displayString == "⌃⌥Tab")
+        #expect(KeyCombo.defaultWheel.validate() == .valid)
+        let optionTab = KeyCombo(keyCode: KeyCodes.tab, modifiers: [.option])
+        guard case .invalid = optionTab.validate() else { Issue.record("⌥Tab should be rejected"); return }
+        guard case .invalid = KeyCombo(keyCode: KeyCodes.tab, modifiers: [.option, .shift]).validate() else {
+            Issue.record("⌥⇧Tab should be rejected"); return
+        }
+        let name = "QuickDockTests-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: name)!
+        defaults.set(try JSONEncoder().encode(optionTab), forKey: "wheelHotKey")
+        #expect(AppPreferences(defaults: defaults).wheelHotKey == .defaultWheel)
+        defaults.removePersistentDomain(forName: name)
+    }
+
     @Test("Wheel shortcut can't duplicate the launcher shortcut")
     func noDuplicateShortcut() {
         let snapshot = PreferencesSnapshot(hotKey: .defaultWheel, wheelHotKey: .defaultWheel).sanitized()

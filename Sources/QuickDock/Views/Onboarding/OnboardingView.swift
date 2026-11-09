@@ -192,7 +192,7 @@ struct OnboardingView: View {
                 .padding(16)
                 .background(RoundedRectangle(cornerRadius: 12).fill(Color.primary.opacity(0.04)))
             }
-            Text("Tip: hold ⌥Tab for the Quick Wheel — flick towards an app and let go. Drag apps, files or links onto the launcher to add more.")
+            Text("Tip: hold ⌃⌥Tab for the Quick Wheel — flick towards an app and let go. Drag apps, files or links onto the launcher to add more.")
                 .font(.callout).foregroundStyle(.secondary)
             Spacer()
         }

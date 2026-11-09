@@ -460,7 +460,7 @@ final class QAHarness {
         let center = NSPoint(x: screen.midX, y: screen.midY)
         let originalMouse = NSEvent.mouseLocation
         // Simulated modifier keys, so holding ⌥ can be tested without a keyboard.
-        var simulated: NSEvent.ModifierFlags = [.option]
+        var simulated: NSEvent.ModifierFlags = [.control, .option]
         wheel.modifierState = { simulated }
         wheel.show(at: center, holding: true)
         await pause(0.4)
@@ -487,16 +487,16 @@ final class QAHarness {
 
         // Hold ⌥, tap Tab, flick up, let go of ⌥: opens Finder (harmless: activates Finder)
         wheel.hotKeyReleased(); await pause(0.5) // Tab comes up long before ⌥
-        check("Tab coming up while ⌥ is held keeps the wheel open", wheel.isVisible, "")
+        check("Tab coming up while ⌃⌥ is held keeps the wheel open", wheel.isVisible, "")
         warp(NSPoint(x: wc.x, y: wc.y + 140)); await pause(0.25)
         check("Flick still highlights after Tab is up", wheel.model.highlighted == 0, "\(String(describing: wheel.model.highlighted))")
         simulated = []; await pause(0.8)
-        check("Letting go of ⌥ opens the highlighted item", !wheel.isVisible && env.library.item(withID: finderID!)?.openCount == 1,
+        check("Letting go of ⌃⌥ opens the highlighted item", !wheel.isVisible && env.library.item(withID: finderID!)?.openCount == 1,
               "visible=\(wheel.isVisible) count=\(env.library.item(withID: finderID!)?.openCount ?? -1)")
 
         // Tap mode: quick ⌥Tab without a highlight keeps the wheel open
         warp(center)
-        simulated = [.option]
+        simulated = [.control, .option]
         wheel.show(at: center, holding: true); await pause(0.05)
         wheel.hotKeyReleased(); simulated = []; await pause(0.3)
         check("Quick tap keeps the wheel open", wheel.isVisible, "")
@@ -504,24 +504,27 @@ final class QAHarness {
         check("Escape closes the wheel", !wheel.isVisible, "")
 
         // Long hold of ⌥ without choosing cancels
-        simulated = [.option]
+        simulated = [.control, .option]
         wheel.show(at: center, holding: true); await pause(0.1)
         wheel.hotKeyReleased(); await pause(0.5)
         simulated = []; await pause(0.3)
-        check("Holding ⌥ without choosing, then letting go, closes the wheel", !wheel.isVisible, "")
+        check("Holding ⌃⌥ without choosing, then letting go, closes the wheel", !wheel.isVisible, "")
 
-        // ⌥ held, Tab tapped repeatedly cycles (the release of each Tab must not end the hold)
-        simulated = [.option]
+        // ⌃⌥ held, Tab tapped repeatedly cycles (the release of each Tab must not end the hold).
+        // The pointer is pinned so real mouse movement during the run can't take over the highlight.
+        wheel.pointerLocation = { center }
+        simulated = [.control, .option]
         wheel.show(at: center, holding: true); await pause(0.2)
         wheel.hotKeyReleased(); wheel.hotKeyPressed(); wheel.hotKeyReleased(); wheel.hotKeyPressed(); wheel.hotKeyReleased()
         await pause(0.1)
-        check("Tapping Tab again while holding ⌥ cycles slots", wheel.isVisible && wheel.model.highlighted == 1, "visible=\(wheel.isVisible) \(String(describing: wheel.model.highlighted))")
+        check("Tapping Tab again while holding ⌃⌥ cycles slots", wheel.isVisible && wheel.model.highlighted == 1, "visible=\(wheel.isVisible) \(String(describing: wheel.model.highlighted))")
         wheel.cycle(forward: false) // back to slot 1 (Finder), so the test only ever opens Finder
         simulated = []; await pause(0.6)
-        check("Letting go of ⌥ after cycling opens that slot", !wheel.isVisible && env.library.item(withID: finderID!)?.openCount == 2,
+        check("Letting go of ⌃⌥ after cycling opens that slot", !wheel.isVisible && env.library.item(withID: finderID!)?.openCount == 2,
               "count=\(env.library.item(withID: finderID!)?.openCount ?? -1)")
         wheel.show(at: center, holding: false); await pause(0.3)
         postKey(KeyCodes.one, characters: "1", to: wheel.panelReference); await pause(0.8)
+        wheel.pointerLocation = { NSEvent.mouseLocation }
         check("Number key 1 opens slot 1", !wheel.isVisible && env.library.item(withID: finderID!)?.openCount == 3,
               "count=\(env.library.item(withID: finderID!)?.openCount ?? -1)")
 

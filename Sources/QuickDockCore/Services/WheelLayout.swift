@@ -69,10 +69,10 @@ public enum WheelLayout {
         return Int((angle + width / 2) / width) % count
     }
 
-    /// What happens when the user lets go of the shortcut's modifier keys (for ⌥Tab, the ⌥ key).
+    /// What happens when the user lets go of the shortcut's modifier keys (for ⌃⌥Tab, ⌃ and ⌥).
     ///
     /// Carbon reports the shortcut "released" when the *main* key (Tab) comes up, which is
-    /// usually long before ⌥ is released, so the wheel follows the modifiers instead.
+    /// usually long before the modifiers are released, so the wheel follows the modifiers instead.
     public enum HoldOutcome: Equatable, Sendable {
         /// Open or switch to this slot.
         case open(Int)

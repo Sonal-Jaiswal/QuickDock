@@ -3,6 +3,11 @@
 All notable changes to QuickDock are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and QuickDock uses [Semantic Versioning](https://semver.org/).
 
+## [0.9.2] - 2026-11-10
+
+### Changed
+- The Quick Wheel shortcut is now **⌃⌥Tab** (Control-Option-Tab). Current macOS doesn't pass plain ⌥Tab to apps, so the wheel never opened. If you were on ⌥Tab, you're moved to ⌃⌥Tab automatically, and the shortcut recorder now explains why ⌥Tab can't be used. The launcher stays on ⌥Space.
+
 ## [0.9.1] - 2026-11-09
 
 ### Fixed

@@ -29,7 +29,7 @@ struct WheelSettings: View {
             } header: {
                 Text("Quick Wheel")
             } footer: {
-                Text("Hold the shortcut, move the pointer towards an app and let go to open it — or switch to it if it’s already running. Tap the shortcut to keep the wheel open and click instead. While holding ⌥, press Tab again to step through the slots. Number keys 1–9 open a slot directly.")
+                Text("Hold the shortcut, move the pointer towards an app and let go to open it — or switch to it if it’s already running. Tap the shortcut to keep the wheel open and click instead. While still holding the modifier keys, press Tab again to step through the slots. Number keys 1–9 open a slot directly.")
                     .font(.caption).foregroundStyle(.secondary)
             }
 

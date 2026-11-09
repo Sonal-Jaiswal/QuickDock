@@ -76,7 +76,7 @@ final class AppEnvironment: ObservableObject {
         hotKeys.currentCombo.map(KeyboardLayout.displayString(for:))
     }
 
-    /// Registers the Quick Wheel shortcut, falling back on first launch if ⌥Tab is taken.
+    /// Registers the Quick Wheel shortcut, falling back on first launch if ⌃⌥Tab is taken.
     func registerWheelHotKey(isFirstLaunch: Bool) {
         guard let combo = preferences.wheelHotKey else {
             wheelHotKeys.register(nil)
@@ -84,7 +84,7 @@ final class AppEnvironment: ObservableObject {
         }
         if wheelHotKeys.register(combo) { return }
         if isFirstLaunch && combo == .defaultWheel {
-            let fallback = KeyCombo(keyCode: KeyCodes.tab, modifiers: [.control, .option])
+            let fallback = KeyCombo(keyCode: KeyCodes.tab, modifiers: [.control, .option, .shift])
             if fallback != preferences.hotKey && wheelHotKeys.register(fallback) { preferences.wheelHotKey = fallback }
         }
     }

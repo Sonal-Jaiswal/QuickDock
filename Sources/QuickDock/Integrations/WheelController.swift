@@ -24,7 +24,7 @@ final class WheelViewModel: ObservableObject {
 }
 
 /// A game-style radial menu: hold the wheel shortcut, flick towards an item, release to open it.
-/// A quick tap instead leaves the wheel open for clicking; ⌥Tab repeatedly cycles like an app switcher.
+/// A quick tap instead leaves the wheel open for clicking; the shortcut repeatedly cycles like an app switcher.
 ///
 /// The pointer position is read with `NSEvent.mouseLocation`, which needs no permissions.
 @MainActor
@@ -42,10 +42,12 @@ final class WheelController: NSObject, NSWindowDelegate {
     private var center = NSPoint.zero
     private var shownAt = Date.distantPast
     private var isHolding = false
-    /// The shortcut's modifier keys (⌥ for ⌥Tab). The hold lasts while they're down.
+    /// The shortcut's modifier keys (⌃⌥ for ⌃⌥Tab). The hold lasts while they're down.
     private var holdModifiers: NSEvent.ModifierFlags = []
     /// Current modifier keys. Replaceable so the QA harness can simulate holding ⌥.
     var modifierState: () -> NSEvent.ModifierFlags = { NSEvent.modifierFlags }
+    /// Current pointer location. Replaceable so the QA harness isn't disturbed by someone using the mouse.
+    var pointerLocation: () -> NSPoint = { NSEvent.mouseLocation }
     /// Set when the keyboard picked a slot; pointer moves of more than a few points take over again.
     private var keyboardAnchor: NSPoint?
     private var clipboardOnLeft = false
@@ -76,7 +78,7 @@ final class WheelController: NSObject, NSWindowDelegate {
     func hotKeyPressed() {
         if panel.isVisible {
             if isHolding {
-                cycle(forward: true) // ⌥Tab again while holding ⌥: next slot
+                cycle(forward: true) // Tab again while holding the modifiers: next slot
             } else {
                 hide()
             }
@@ -191,7 +193,7 @@ final class WheelController: NSObject, NSWindowDelegate {
             finishHold()
             return
         }
-        let mouse = NSEvent.mouseLocation
+        let mouse = pointerLocation()
         if let anchor = keyboardAnchor {
             guard hypot(mouse.x - anchor.x, mouse.y - anchor.y) > 12 else { return }
             keyboardAnchor = nil
@@ -218,7 +220,7 @@ final class WheelController: NSObject, NSWindowDelegate {
         let count = model.items.count
         let current = model.highlighted ?? (forward ? -1 : 0)
         model.highlighted = (current + (forward ? 1 : -1) + count) % count
-        keyboardAnchor = NSEvent.mouseLocation
+        keyboardAnchor = pointerLocation()
     }
 
     // MARK: Actions

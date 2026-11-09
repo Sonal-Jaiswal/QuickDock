@@ -13,13 +13,13 @@ actions you use most one click (or <kbd>⌥ Space</kbd>) away. It's private, wor
 <p align="center"><img src="website/public/screenshots/launcher-dark.png" width="640" alt="The QuickDock launcher"></p>
 <p align="center"><img src="website/public/screenshots/wheel-dark.png" width="640" alt="The QuickDock Quick Wheel with clipboard history"></p>
 
-> **Early access, unsigned build.** QuickDock 0.9.1 is **not** signed with an Apple Developer ID and
+> **Early access, unsigned build.** QuickDock 0.9.2 is **not** signed with an Apple Developer ID and
 > **not** notarized by Apple. macOS will warn you the first time you open it. See [Installation](#installation).
 
 ## Features
 
 - **Floating launcher.** A translucent panel (Liquid Glass on macOS 26+) appears on the display you're using, above your windows and over full-screen apps. Escape or a click outside closes it.
-- **Quick Wheel.** Hold ⌥Tab: favorites and most-used apps appear in a ring around the pointer. Flick and release to open or switch, like a game's weapon wheel. Recent clipboard text sits beside it (opt-in, local only, password-manager copies skipped).
+- **Quick Wheel.** Hold ⌃⌥Tab (Control-Option-Tab): favorites and most-used apps appear in a ring around the pointer. Flick and release to open or switch, like a game's weapon wheel. Recent clipboard text sits beside it (opt-in, local only, password-manager copies skipped).
 - **Menu bar and global shortcut.** Click the menu-bar icon or press ⌥Space, or any shortcut you record. QuickDock detects shortcut conflicts and falls back gracefully.
 - **Apps, files, folders, websites and actions.** Actions include copying a text snippet, starting a new email, Mission Control, Screenshot, Screen Saver, System Settings and QuickDock Settings.
 - **Organize.** Instant search, filters (All, Favorites, Apps, Files, Folders, Web, Actions), categories, favorites, custom names and icons, and drag-and-drop ordering.
@@ -36,7 +36,7 @@ actions you use most one click (or <kbd>⌥ Space</kbd>) away. It's private, wor
 ## Installation
 
 1. Download `QuickDock-<version>-arm64.dmg` from the GitHub **Releases** page and, ideally, check its checksum:
-   `shasum -a 256 ~/Downloads/QuickDock-0.9.1-arm64.dmg`
+   `shasum -a 256 ~/Downloads/QuickDock-0.9.2-arm64.dmg`
 2. Open the DMG and drag **QuickDock** to **Applications**.
 3. Open QuickDock. Because it isn't notarized, macOS blocks it the first time:
    - **macOS 15 Sequoia and later:** click **Done** in the warning, open **System Settings › Privacy & Security**, click **Open Anyway** next to QuickDock, and confirm.

@@ -60,6 +60,7 @@ were made: they are real captures of the running app, not mockups.
 - ✅ Hold, flick up, then release opens the highlighted item (Finder; open count recorded)
 - ✅ A quick tap keeps the wheel open; Escape closes it; number key 1 opens slot 1
 - ✅ (after a user report, 2026-11-09) Tab coming up while ⌥ is still held keeps the wheel open; letting go of ⌥ opens the highlighted app; holding ⌥ without choosing cancels; tapping Tab repeatedly while ⌥ is held cycles. ⌥ is simulated in the harness (synthetic key events need Accessibility); the code reads `NSEvent.modifierFlags`, which needs no permission.
+- ✅ (0.9.2, user report) Plain ⌥Tab is registered without error but never delivered on macOS 27, while ⌥Space works. Confirmed by the user: ⌃⌥Tab works. Default changed to ⌃⌥Tab; a saved ⌥Tab migrates (unit test). The harness pins the pointer during the keyboard-cycling checks so mouse use during a run can't disturb them.
 - ✅ Wheel visible **and key** (verified with the screen unlocked); its buttons don't take keyboard focus
 - ✅ Clipboard monitor records a copy and **ignores** a copy marked `org.nspasteboard.ConcealedType` (tested on a private pasteboard, never the real clipboard)
 - ✅ History ordering, de-duplication, pinning, limits, oversized/empty text, search and persistence (unit tests)
