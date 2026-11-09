@@ -41,3 +41,9 @@ git commit -am "Website: QuickDock <version>" && git push
 ```
 If the release DMG was built in CI, download it and its `.sha256` into `dist/` first so the size and checksum match
 the published file exactly.
+
+## Live custom domain
+The site is served at <https://quickdock.sonal-jaiswal.tech>. DNS: a `CNAME` record `quickdock` → `sonal-jaiswal.github.io`
+at the domain's DNS provider, and the custom domain set in the repository's Settings › Pages. `actions/configure-pages`
+then supplies the right origin and an empty base path, so no workflow change is needed. The old
+`sonal-jaiswal.github.io/QuickDock` address redirects to it.
