@@ -166,7 +166,7 @@ struct OnboardingView: View {
                     if let combo = hotKeys.currentCombo, hotKeys.isRegistered {
                         Keycap(text: KeyboardLayout.displayString(for: combo), prominent: true)
                     }
-                    ShortcutRecorder(hotKeys: hotKeys, preferences: preferences)
+                    ShortcutRecorder(hotKeys: hotKeys, combo: $preferences.hotKey, otherCombo: preferences.wheelHotKey, otherPurpose: "the Quick Wheel")
                     if case .failed(_, let message) = hotKeys.status {
                         Text(message).font(.caption).foregroundStyle(.orange)
                             .fixedSize(horizontal: false, vertical: true)
@@ -192,7 +192,7 @@ struct OnboardingView: View {
                 .padding(16)
                 .background(RoundedRectangle(cornerRadius: 12).fill(Color.primary.opacity(0.04)))
             }
-            Text("Tip: drag apps, files or links onto the launcher to add more.")
+            Text("Tip: hold ⌥Tab for the Quick Wheel — flick towards an app and let go. Drag apps, files or links onto the launcher to add more.")
                 .font(.callout).foregroundStyle(.secondary)
             Spacer()
         }

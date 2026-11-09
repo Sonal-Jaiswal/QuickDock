@@ -19,11 +19,19 @@ final class HotKeyCenter: ObservableObject {
 
     /// Called on the main thread when the shortcut is pressed.
     var onPressed: (() -> Void)?
+    /// Called on the main thread when the shortcut is released (used for hold-to-select).
+    var onReleased: (() -> Void)?
 
     private var hotKeyRef: EventHotKeyRef?
     private var eventHandler: EventHandlerRef?
     private var isSuspended = false
-    fileprivate static let signature: OSType = 0x5144_4B31 // "QDK1"
+    /// Distinguishes this shortcut from QuickDock's other shortcuts.
+    nonisolated fileprivate let signature: OSType
+
+    /// `signature` must be unique per instance, e.g. "QDK1" (launcher) and "QDK2" (wheel).
+    init(signature: OSType = 0x5144_4B31) {
+        self.signature = signature
+    }
 
     var currentCombo: KeyCombo? {
         switch status {
@@ -53,7 +61,7 @@ final class HotKeyCenter: ObservableObject {
         installHandlerIfNeeded()
         var ref: EventHotKeyRef?
         let result = RegisterEventHotKey(combo.keyCode, combo.modifiers.carbonFlags,
-                                         EventHotKeyID(signature: Self.signature, id: 1),
+                                         EventHotKeyID(signature: signature, id: 1),
                                          GetApplicationEventTarget(), 0, &ref)
         if result == noErr, let ref {
             hotKeyRef = ref
@@ -107,20 +115,25 @@ final class HotKeyCenter: ObservableObject {
 
     private func installHandlerIfNeeded() {
         guard eventHandler == nil else { return }
-        var spec = EventTypeSpec(eventClass: OSType(kEventClassKeyboard), eventKind: UInt32(kEventHotKeyPressed))
+        var specs = [
+            EventTypeSpec(eventClass: OSType(kEventClassKeyboard), eventKind: UInt32(kEventHotKeyPressed)),
+            EventTypeSpec(eventClass: OSType(kEventClassKeyboard), eventKind: UInt32(kEventHotKeyReleased)),
+        ]
         let context = Unmanaged.passUnretained(self).toOpaque()
         InstallEventHandler(GetApplicationEventTarget(), { _, event, userData -> OSStatus in
             guard let event, let userData else { return OSStatus(eventNotHandledErr) }
             var hotKeyID = EventHotKeyID()
             let result = GetEventParameter(event, EventParamName(kEventParamDirectObject), EventParamType(typeEventHotKeyID),
                                            nil, MemoryLayout<EventHotKeyID>.size, nil, &hotKeyID)
-            guard result == noErr, hotKeyID.signature == HotKeyCenter.signature else { return OSStatus(eventNotHandledErr) }
             let center = Unmanaged<HotKeyCenter>.fromOpaque(userData).takeUnretainedValue()
+            // Not ours (another QuickDock shortcut): let the next handler see it.
+            guard result == noErr, hotKeyID.signature == center.signature else { return OSStatus(eventNotHandledErr) }
+            let released = GetEventKind(event) == UInt32(kEventHotKeyReleased)
             DispatchQueue.main.async {
-                MainActor.assumeIsolated { center.onPressed?() }
+                MainActor.assumeIsolated { released ? center.onReleased?() : center.onPressed?() }
             }
             return noErr
-        }, 1, &spec, context, &eventHandler)
+        }, specs.count, &specs, context, &eventHandler)
     }
 
     private static func message(for status: OSStatus, combo: KeyCombo) -> String {

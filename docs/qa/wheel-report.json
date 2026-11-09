@@ -1,0 +1,92 @@
+{
+  "failed" : 0,
+  "macOS" : "Version 27.2 (Build 26B123)",
+  "passed" : 14,
+  "results" : [
+    {
+      "detail" : "",
+      "name" : "Clipboard records a copy",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "Password-manager copy is ignored",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "visible=true key=false keyWindow=nil ",
+      "name" : "Wheel visible (screen locked: key focus not testable)",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "Finder, Safari, Mail, Notes, Music, Calendar, Photos, Terminal",
+      "name" : "Wheel shows 8 slots, favorites first",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "Most-used fills after favorites",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "Running app detected (Finder)",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "Optional(0)",
+      "name" : "Pointer up highlights slot 1",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "Optional(2)",
+      "name" : "Pointer right highlights slot 3",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "Centre dead zone clears highlight",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "visible=false count=1",
+      "name" : "Release opens the highlighted item",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "Quick tap keeps the wheel open",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "Escape closes the wheel",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "Optional(1)",
+      "name" : "Pressing the shortcut again cycles slots",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "Number key 1 opens slot 1",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "view render on backdrop",
+      "name" : "capture shot-wheel-dark",
+      "result" : "INFO"
+    },
+    {
+      "detail" : "view render on backdrop",
+      "name" : "capture shot-wheel-light",
+      "result" : "INFO"
+    },
+    {
+      "detail" : "view render on backdrop",
+      "name" : "capture shot-settings-wheel",
+      "result" : "INFO"
+    }
+  ]
+}

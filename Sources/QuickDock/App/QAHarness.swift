@@ -58,6 +58,10 @@ final class QAHarness {
             env.library.flush()
             return
         }
+        if phase == "wheel" {
+            await wheelCheck()
+            return
+        }
         if phase == "launch" {
             await launchCheck()
             return
@@ -132,7 +136,9 @@ final class QAHarness {
         await pause(0.8)
         let panel = controller.panelForTesting
         check("Launcher visible", panel.isVisible, "")
-        check("Launcher is key without activating QuickDock", panel.isKeyWindow, "key=\(panel.isKeyWindow) active=\(NSApp.isActive)")
+        let locked = NSWorkspace.shared.frontmostApplication?.bundleIdentifier == "com.apple.loginwindow"
+        check(locked ? "Launcher focus (screen locked: not testable)" : "Launcher is key without activating QuickDock",
+              locked || panel.isKeyWindow, "key=\(panel.isKeyWindow) active=\(NSApp.isActive)")
         let screen = panel.screen ?? NSScreen.main!
         check("Launcher centred horizontally on its display", abs(panel.frame.midX - screen.visibleFrame.midX) < 2,
               "panel \(panel.frame) screen \(screen.visibleFrame)")
@@ -411,6 +417,108 @@ final class QAHarness {
         if !textEditWasRunning { NSRunningApplication.runningApplications(withBundleIdentifier: "com.apple.TextEdit").forEach { $0.terminate() } }
     }
 
+    /// Quick Wheel and clipboard: real pointer tracking (cursor warp), release-to-open, tap mode,
+    /// keyboard, and clipboard recording on a private pasteboard.
+    private func wheelCheck() async {
+        guard let wheel = env.wheelController else { check("Wheel controller exists", false, ""); return }
+        let ids = ["com.apple.finder", "com.apple.Safari", "com.apple.mail", "com.apple.Notes", "com.apple.iCal",
+                   "com.apple.Music", "com.apple.Photos", "com.apple.Terminal", "com.apple.TextEdit", "com.apple.Maps"]
+        env.adder.add(urls: ids.compactMap { NSWorkspace.shared.urlForApplication(withBundleIdentifier: $0) })
+        for name in ["Finder", "Safari", "Mail", "Notes"] {
+            if let item = env.library.items.first(where: { $0.name == name }) { env.library.setPinned(item.id, true) }
+        }
+        if let music = env.library.items.first(where: { $0.name == "Music" }) {
+            for _ in 0..<3 { env.library.recordOpen(music.id) }
+        }
+        let finderID = env.library.items.first { $0.name == "Finder" }?.id
+
+        // Clipboard on a private pasteboard
+        env.preferences.clipboardHistoryEnabled = true
+        await pause(0.3)
+        let board = NSPasteboard(name: NSPasteboard.Name("io.github.quickdock.qa"))
+        board.clearContents(); board.setString("QA copied text", forType: .string)
+        env.clipboard.poll()
+        check("Clipboard records a copy", env.clipboard.history.ordered.first?.text == "QA copied text", "")
+        board.clearContents()
+        board.setString("hunter2", forType: .string)
+        board.setData(Data(), forType: NSPasteboard.PasteboardType("org.nspasteboard.ConcealedType"))
+        env.clipboard.poll()
+        check("Password-manager copy is ignored", !env.clipboard.history.entries.contains { $0.text == "hunter2" }, "")
+        env.clipboard.eraseAll()
+        for (text, source) in [("https://github.com/quickdock/quickdock/releases", "Safari"),
+                               ("Meeting moved to 3:30 — same room.", "Messages"),
+                               ("brew install --cask quickdock", "Terminal"),
+                               ("Thanks for the feedback! I’ll send the updated draft by Friday.", "Mail"),
+                               ("#4C8DFF", "Figma"),
+                               ("SELECT name, opened_at FROM items ORDER BY opened_at DESC LIMIT 10;", "TablePlus")].reversed() {
+            env.clipboard.recordForTesting(text, source: source)
+        }
+        if let first = env.clipboard.history.ordered.dropFirst(4).first { env.clipboard.togglePin(first.id) }
+
+        // Show at screen centre, as if the shortcut is held
+        let screen = NSScreen.main!.visibleFrame
+        let center = NSPoint(x: screen.midX, y: screen.midY)
+        let originalMouse = NSEvent.mouseLocation
+        wheel.show(at: center, holding: true)
+        await pause(0.4)
+        // Key focus is impossible while the Mac's screen is locked (frontmost app: loginwindow).
+        let frontmost = NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? ""
+        check(frontmost == "com.apple.loginwindow" ? "Wheel visible (screen locked: key focus not testable)" : "Wheel visible and key",
+              wheel.isVisible && (frontmost == "com.apple.loginwindow" || wheel.panelReference.isKeyWindow),
+              "visible=\(wheel.isVisible) key=\(wheel.panelReference.isKeyWindow) keyWindow=\(NSApp.keyWindow?.title ?? "nil") \(NSApp.keyWindow.map { String(describing: type(of: $0)) } ?? "")")
+        check("Wheel shows 8 slots, favorites first", wheel.model.items.count == 8 && wheel.model.items.first?.name == "Finder",
+              wheel.model.items.map(\.name).joined(separator: ", "))
+        check("Most-used fills after favorites", wheel.model.items.dropFirst(4).first?.name == "Music", "")
+        check("Running app detected (Finder)", wheel.model.items.first.map(wheel.model.isRunning) == true, "")
+
+        // Real pointer tracking: warp the cursor (CG coordinates have a top-left origin).
+        let primaryHeight = NSScreen.screens[0].frame.height
+        func warp(_ p: NSPoint) { CGWarpMouseCursorPosition(CGPoint(x: p.x, y: primaryHeight - p.y)) }
+        let wc = wheel.wheelCenter
+        warp(NSPoint(x: wc.x, y: wc.y + 140)); await pause(0.25)
+        check("Pointer up highlights slot 1", wheel.model.highlighted == 0, "\(String(describing: wheel.model.highlighted))")
+        warp(NSPoint(x: wc.x + 140, y: wc.y)); await pause(0.25)
+        check("Pointer right highlights slot 3", wheel.model.highlighted == 2, "\(String(describing: wheel.model.highlighted))")
+        warp(NSPoint(x: wc.x + 5, y: wc.y + 5)); await pause(0.25)
+        check("Centre dead zone clears highlight", wheel.model.highlighted == nil, "")
+
+        // Hold → flick up → release opens Finder (harmless: activates Finder)
+        warp(NSPoint(x: wc.x, y: wc.y + 140)); await pause(0.25)
+        wheel.hotKeyReleased(); await pause(0.8)
+        check("Release opens the highlighted item", !wheel.isVisible && env.library.item(withID: finderID!)?.openCount == 1,
+              "visible=\(wheel.isVisible) count=\(env.library.item(withID: finderID!)?.openCount ?? -1)")
+
+        // Tap mode: quick release without a highlight keeps the wheel open
+        warp(center)
+        wheel.show(at: center, holding: true); await pause(0.1)
+        wheel.hotKeyReleased(); await pause(0.3)
+        check("Quick tap keeps the wheel open", wheel.isVisible, "")
+        postKey(KeyCodes.escape, to: wheel.panelReference); await pause(0.3)
+        check("Escape closes the wheel", !wheel.isVisible, "")
+
+        // ⌥Tab cycling while held, then number key
+        wheel.show(at: center, holding: true); await pause(0.2)
+        wheel.hotKeyPressed(); wheel.hotKeyPressed()
+        check("Pressing the shortcut again cycles slots", wheel.model.highlighted == 1, "\(String(describing: wheel.model.highlighted))")
+        postKey(KeyCodes.one, characters: "1", to: wheel.panelReference); await pause(0.8)
+        check("Number key 1 opens slot 1", !wheel.isVisible && env.library.item(withID: finderID!)?.openCount == 2, "")
+
+        // Screenshots
+        for (mode, label) in [(AppearanceMode.dark, "dark"), (.light, "light")] {
+            env.preferences.appearance = mode
+            warp(center)
+            wheel.show(at: center, holding: false); await pause(0.6)
+            wheel.cycle(forward: true); wheel.cycle(forward: true) // keyboard highlight survives a resting pointer
+            await pause(0.3)
+            capture(wheel.panelReference, "shot-wheel-\(label)")
+            wheel.hide(); await pause(0.2)
+        }
+        env.preferences.appearance = .system
+        env.windows.showSettings(section: .wheel); await pause(0.6)
+        if let window = NSApp.windows.first(where: { $0.title == "QuickDock Settings" }) { capture(window, "shot-settings-wheel"); window.close() }
+        warp(originalMouse)
+    }
+
     // MARK: Helpers
 
     private func check(_ name: String, _ passed: Bool, _ detail: String) {
@@ -421,8 +529,8 @@ final class QAHarness {
         try? await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
     }
 
-    private func postKey(_ keyCode: UInt32, characters: String = "", modifiers: NSEvent.ModifierFlags = []) {
-        guard let window = env.launcherController?.panelForTesting else { return }
+    private func postKey(_ keyCode: UInt32, characters: String = "", modifiers: NSEvent.ModifierFlags = [], to target: NSWindow? = nil) {
+        guard let window = target ?? env.launcherController?.panelForTesting else { return }
         for type in [NSEvent.EventType.keyDown, .keyUp] {
             if let event = NSEvent.keyEvent(with: type, location: .zero, modifierFlags: modifiers,
                                             timestamp: ProcessInfo.processInfo.systemUptime, windowNumber: window.windowNumber,
@@ -435,15 +543,42 @@ final class QAHarness {
 
     private func capture(_ window: NSWindow, _ name: String) {
         let url = Self.outputDirectory.appendingPathComponent("\(name).png")
-        if let image = WindowCapture.windowServerImage(of: window) {
+        let forceViewRender = ProcessInfo.processInfo.environment["QUICKDOCK_QA_VIEW_RENDER"] == "1"
+        if !forceViewRender, let image = WindowCapture.windowServerImage(of: window) {
             let rep = NSBitmapImageRep(cgImage: image)
             try? rep.representation(using: .png, properties: [:])?.write(to: url)
             results.append(["name": "capture \(name)", "result": "INFO", "detail": "window server"])
-        } else if let view = window.contentView, let rep = view.bitmapImageRepForCachingDisplay(in: view.bounds) {
+        } else if let view = window.contentView, let rep = forceViewRender ? Self.retinaRep(for: view) : view.bitmapImageRepForCachingDisplay(in: view.bounds) {
             view.cacheDisplay(in: view.bounds, to: rep)
+            if forceViewRender {
+                // Composite onto a neutral backdrop so the (unrendered) glass areas are visible.
+                let pixelSize = NSSize(width: rep.pixelsWide, height: rep.pixelsHigh)
+                let composed = NSImage(size: pixelSize, flipped: false) { rect in
+                    (window.effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+                        ? NSColor(calibratedWhite: 0.16, alpha: 1) : NSColor(calibratedWhite: 0.88, alpha: 1)).setFill()
+                    rect.fill()
+                    rep.draw(in: rect)
+                    return true
+                }
+                if let tiff = composed.tiffRepresentation, let out = NSBitmapImageRep(data: tiff) {
+                    try? out.representation(using: .png, properties: [:])?.write(to: url)
+                    results.append(["name": "capture \(name)", "result": "INFO", "detail": "view render on backdrop"])
+                    return
+                }
+            }
             try? rep.representation(using: .png, properties: [:])?.write(to: url)
             results.append(["name": "capture \(name)", "result": "INFO", "detail": "view render (no backdrop)"])
         }
+    }
+
+    /// A 2× bitmap so in-process renders are sharp on Retina displays.
+    private static func retinaRep(for view: NSView) -> NSBitmapImageRep? {
+        let size = view.bounds.size
+        guard let rep = NSBitmapImageRep(bitmapDataPlanes: nil, pixelsWide: Int(size.width * 2), pixelsHigh: Int(size.height * 2),
+                                         bitsPerSample: 8, samplesPerPixel: 4, hasAlpha: true, isPlanar: false,
+                                         colorSpaceName: .deviceRGB, bytesPerRow: 0, bitsPerPixel: 0) else { return nil }
+        rep.size = size
+        return rep
     }
 
     private func writeReport() {

@@ -17,12 +17,12 @@ export const site = {
 
   /** GitHub repository that hosts the source and the Releases. Leave `owner` empty until it exists. */
   repository: {
-    owner: "",
+    owner: "Sonal-Jaiswal",
     name: "QuickDock",
   },
 
   /** Public contact address shown in the footer. Optional. */
-  contactEmail: "",
+  contactEmail: "its.sonaljaiswal@gmail.com",
 
   /** Voluntary donations. See docs/DONATIONS.md. */
   donation: {

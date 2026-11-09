@@ -42,7 +42,7 @@ targets:
         ENABLE_HARDENED_RUNTIME: YES
         ENABLE_APP_SANDBOX: YES
         QD_COPYRIGHT: "© 2026 The QuickDock Authors. MIT License."
-        QD_REPOSITORY_URL: ""
-        QD_WEBSITE_URL: ""
-        QD_SUPPORT_EMAIL: ""
+        QD_REPOSITORY_URL: "https://github.com/Sonal-Jaiswal/QuickDock"
+        QD_WEBSITE_URL: "https://sonal-jaiswal.github.io/QuickDock"
+        QD_SUPPORT_EMAIL: "its.sonaljaiswal@gmail.com"
         LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/../Frameworks"

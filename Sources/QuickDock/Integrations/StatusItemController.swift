@@ -63,6 +63,12 @@ final class StatusItemController: NSObject, NSMenuDelegate {
             open.title = "Open QuickDock  (\(KeyboardLayout.displayString(for: combo)))"
         }
         menu.addItem(open)
+        let wheelItem = NSMenuItem(title: "Open Quick Wheel", action: #selector(openWheel), keyEquivalent: "")
+        wheelItem.target = self
+        if let combo = env.wheelHotKeys.currentCombo, env.wheelHotKeys.isRegistered {
+            wheelItem.title = "Open Quick Wheel  (\(KeyboardLayout.displayString(for: combo)))"
+        }
+        menu.addItem(wheelItem)
 
         let favorites = env.library.favorites
         if env.preferences.showFavoritesInMenu && !favorites.isEmpty {
@@ -114,6 +120,11 @@ final class StatusItemController: NSObject, NSMenuDelegate {
     }
 
     @objc private func openLauncher() { env.launcherController?.show() }
+    @objc private func openWheel() {
+        // Centre on the screen with the pointer, since the menu sits at the top edge.
+        let screen = LauncherController.activeScreen().visibleFrame
+        env.wheelController?.show(at: NSPoint(x: screen.midX, y: screen.midY), holding: false)
+    }
 
     @objc private func openFavorite(_ sender: NSMenuItem) {
         guard let id = sender.representedObject as? UUID, let item = env.library.item(withID: id) else { return }

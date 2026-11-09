@@ -47,6 +47,9 @@ public struct KeyCombo: Codable, Equatable, Hashable, Sendable {
     /// Used if Option + Space is already taken: Control + Option + Space.
     public static let fallbackLauncher = KeyCombo(keyCode: KeyCodes.space, modifiers: [.control, .option])
 
+    /// Option + Tab: hold to show the Quick Wheel, release to open the highlighted item.
+    public static let defaultWheel = KeyCombo(keyCode: KeyCodes.tab, modifiers: [.option])
+
     /// A display string such as "⌥Space". `keyName` lets the app supply a
     /// layout-aware name for the key; it falls back to US-layout names.
     public func displayString(keyName: String? = nil) -> String {
@@ -145,7 +148,7 @@ public enum KeyCodes {
             five: "5", equal: "=", nine: "9", seven: "7", minus: "-", eight: "8", zero: "0", rightBracket: "]",
             o: "O", u: "U", leftBracket: "[", i: "I", p: "P", returnKey: "↩", l: "L", j: "J", quote: "'",
             k: "K", semicolon: ";", backslash: "\\", comma: ",", slash: "/", n: "N", m: "M", period: ".",
-            tab: "⇥", space: "Space", grave: "`", delete: "⌫", escape: "⎋", leftArrow: "←", rightArrow: "→",
+            tab: "Tab", space: "Space", grave: "`", delete: "⌫", escape: "⎋", leftArrow: "←", rightArrow: "→",
             downArrow: "↓", upArrow: "↑", forwardDelete: "⌦", home: "↖", end: "↘", pageUp: "⇞", pageDown: "⇟",
         ]
         for key in functionKeys { map[key.code] = key.name }

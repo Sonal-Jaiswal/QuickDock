@@ -10,6 +10,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var pendingOpenURLs: [URL] = []
     private var statusItem: StatusItemController?
     private var launcher: LauncherController?
+    private var wheel: WheelController?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Only one QuickDock may run, otherwise there would be two menu-bar icons and a
@@ -25,12 +26,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         #if DEBUG
         if QAHarness.isEnabled {
             let phase = ProcessInfo.processInfo.environment["QUICKDOCK_QA_PHASE"] ?? "full"
-            if phase == "full" || phase == "external-add" || phase == "screenshots" || phase == "launch" {
+            if phase == "full" || phase == "external-add" || phase == "screenshots" || phase == "launch" || phase == "wheel" {
                 QAHarness.prepareIsolatedStorage()
             }
             let defaults = UserDefaults(suiteName: QAHarness.defaultsSuite)!
             defaults.set(true, forKey: "hasCompletedOnboarding")
-            env = AppEnvironment(dataDirectory: QAHarness.dataDirectory, defaults: defaults)
+            // A private pasteboard keeps QA away from the user's real clipboard.
+            env = AppEnvironment(dataDirectory: QAHarness.dataDirectory, defaults: defaults,
+                                 pasteboard: NSPasteboard(name: NSPasteboard.Name("io.github.quickdock.qa")))
         } else {
             env = AppEnvironment()
         }
@@ -45,10 +48,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         env.launcher.showSettings = { [weak self] in self?.env.windows.showSettings() }
         env.hotKeys.onPressed = { [weak launcher] in launcher?.toggle() }
 
+        let wheel = WheelController(env: env)
+        self.wheel = wheel
+        env.wheelController = wheel
+        env.wheelHotKeys.onPressed = { [weak wheel] in wheel?.hotKeyPressed() }
+        env.wheelHotKeys.onReleased = { [weak wheel] in wheel?.hotKeyReleased() }
+
         statusItem = StatusItemController(env: env)
 
         let isFirstLaunch = !env.preferences.hasCompletedOnboarding
         env.registerHotKey(isFirstLaunch: isFirstLaunch)
+        env.registerWheelHotKey(isFirstLaunch: isFirstLaunch)
         observePreferenceChanges()
 
         DistributedNotificationCenter.default().addObserver(self, selector: #selector(showLauncherRequested),
@@ -99,6 +109,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_ notification: Notification) {
         env?.library.flush()
         env?.hotKeys.tearDown()
+        env?.wheelHotKeys.tearDown()
+        env?.clipboard.flush()
         statusItem?.remove()
     }
 

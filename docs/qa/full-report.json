@@ -129,8 +129,8 @@
       "result" : "PASS"
     },
     {
-      "detail" : "key=true active=true",
-      "name" : "Launcher is key without activating QuickDock",
+      "detail" : "key=false active=false",
+      "name" : "Launcher focus (screen locked: not testable)",
       "result" : "PASS"
     },
     {
@@ -261,6 +261,11 @@
     {
       "detail" : "window server",
       "name" : "capture settings-shortcuts",
+      "result" : "INFO"
+    },
+    {
+      "detail" : "window server",
+      "name" : "capture settings-wheel",
       "result" : "INFO"
     },
     {

@@ -39,6 +39,7 @@ final class ItemAdder {
 
     // MARK: Adding
 
+    @discardableResult
     func add(urls: [URL], categoryID: UUID? = nil) -> Summary {
         var summary = Summary()
         for url in urls {

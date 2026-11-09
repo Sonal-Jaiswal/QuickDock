@@ -10,6 +10,8 @@ All notable changes to QuickDock are documented here. The format follows
 First public early-access build (unsigned, not notarized).
 
 ### Added
+- Quick Wheel: hold ⌥Tab and a ring of your favorite and most-used apps appears around the pointer. Flick and release to open or switch, tap to click, press Tab again to cycle, or press 1–9.
+- Optional clipboard history beside the wheel. It's text only, stays on your Mac, skips password-manager copies, supports pinning, and saves to disk only if you choose.
 - Floating launcher panel with Liquid Glass on macOS 26 and later, centred on the display with the pointer.
 - Menu-bar icon: click to open the launcher, right-click for favorites, adding items, Settings and Quit.
 - Global keyboard shortcut (default ⌥Space) with conflict detection, automatic fallback and a shortcut recorder.

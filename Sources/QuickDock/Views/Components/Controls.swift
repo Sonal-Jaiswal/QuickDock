@@ -79,7 +79,12 @@ struct SearchField: NSViewRepresentable {
 /// suspended so it can be pressed again.
 struct ShortcutRecorder: View {
     @ObservedObject var hotKeys: HotKeyCenter
-    @ObservedObject var preferences: AppPreferences
+    /// The stored shortcut this recorder edits.
+    @Binding var combo: KeyCombo?
+    var defaultCombo: KeyCombo = .defaultLauncher
+    /// Another QuickDock shortcut this one must not duplicate, with its purpose.
+    var otherCombo: KeyCombo? = nil
+    var otherPurpose: String = ""
     @State private var isRecording = false
     @State private var message: String?
     @State private var isWarning = false
@@ -93,7 +98,7 @@ struct ShortcutRecorder: View {
                         if isRecording {
                             Image(systemName: "record.circle").foregroundStyle(.red)
                             Text("Type shortcut…")
-                        } else if let combo = preferences.hotKey {
+                        } else if let combo {
                             Text(KeyboardLayout.displayString(for: combo))
                                 .font(.system(.body, design: .rounded).weight(.medium))
                         } else {
@@ -107,10 +112,10 @@ struct ShortcutRecorder: View {
                 if isRecording {
                     Button("Cancel") { stopRecording() }
                 } else {
-                    if preferences.hotKey != .defaultLauncher {
-                        Button("Use ⌥Space") { apply(.defaultLauncher) }
+                    if combo != defaultCombo {
+                        Button("Use \(KeyboardLayout.displayString(for: defaultCombo))") { apply(defaultCombo) }
                     }
-                    if preferences.hotKey != nil {
+                    if combo != nil {
                         Button("Turn Off") { apply(nil) }
                     }
                 }
@@ -171,12 +176,18 @@ struct ShortcutRecorder: View {
         }
     }
 
-    private func apply(_ combo: KeyCombo?) {
+    private func apply(_ newCombo: KeyCombo?) {
+        if let newCombo, newCombo == otherCombo {
+            message = "\(KeyboardLayout.displayString(for: newCombo)) is already QuickDock’s shortcut for \(otherPurpose)."
+            isWarning = false
+            return
+        }
+        let combo = newCombo
         if let error = hotKeys.tryReplacing(with: combo) {
             message = error
             isWarning = false
         } else {
-            preferences.hotKey = combo
+            self.combo = combo
             message = nil
         }
     }

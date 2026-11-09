@@ -3,7 +3,7 @@ import SwiftUI
 import QuickDockCore
 
 enum SettingsSection: String, CaseIterable, Identifiable {
-    case general, appearance, launcher, shortcuts, organization, data, about
+    case general, appearance, launcher, shortcuts, wheel, organization, data, about
     var id: String { rawValue }
 
     var title: String {
@@ -12,6 +12,7 @@ enum SettingsSection: String, CaseIterable, Identifiable {
         case .appearance: return "Appearance"
         case .launcher: return "Launcher"
         case .shortcuts: return "Shortcuts"
+        case .wheel: return "Wheel & Clipboard"
         case .organization: return "Organization"
         case .data: return "Data"
         case .about: return "About QuickDock"
@@ -24,6 +25,7 @@ enum SettingsSection: String, CaseIterable, Identifiable {
         case .appearance: return "paintpalette"
         case .launcher: return "square.grid.3x3"
         case .shortcuts: return "keyboard"
+        case .wheel: return "circle.grid.cross"
         case .organization: return "folder"
         case .data: return "externaldrive"
         case .about: return "info.circle"
@@ -56,6 +58,7 @@ struct SettingsView: View {
                 case .appearance: AppearanceSettings()
                 case .launcher: LauncherSettings()
                 case .shortcuts: ShortcutSettings()
+                case .wheel: WheelSettings()
                 case .organization: OrganizationSettings()
                 case .data: DataSettings()
                 case .about: AboutSettings()
@@ -206,7 +209,7 @@ private struct ShortcutSettings: View {
         Form {
             Section {
                 LabeledContent("Open QuickDock") {
-                    ShortcutRecorder(hotKeys: hotKeys, preferences: preferences)
+                    ShortcutRecorder(hotKeys: hotKeys, combo: $preferences.hotKey, otherCombo: preferences.wheelHotKey, otherPurpose: "the Quick Wheel")
                 }
                 statusRow
             } header: {

@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		06C48F8D90F005F8BDE8DC3F /* WheelSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776AF7FA61221BC3F1988FC9 /* WheelSettings.swift */; };
+		1DE5EB492115198ED996F436 /* GlassSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E14E85033B2BE0087FCAC7 /* GlassSurface.swift */; };
 		26762655DAAA1C9291DB257F /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962EB7446A238FB170E34751 /* OnboardingView.swift */; };
 		3EE23205A6764483E41EF217 /* LauncherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D8C793A4E1160E16DCFB3A /* LauncherView.swift */; };
+		3FE81D88709CF4F89DEB8B98 /* WheelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE76DC4975828A5BD90F82E7 /* WheelView.swift */; };
 		4437BDB90BD6677EC419011A /* HotKeyCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DDFEA64E79274B9C7DE13E /* HotKeyCenter.swift */; };
 		5DE7BBEBBC2F9D0FF05768FD /* SystemServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10093070188293F3A3CF08A /* SystemServices.swift */; };
 		611E1DF505BB98737E0B32D6 /* QAHarness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2148DF99003A78D3ED3669CA /* QAHarness.swift */; };
@@ -21,6 +24,7 @@
 		8B96005265FB6665B791AABD /* ItemTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E30E8CAC99FAFE9410EF6B3 /* ItemTile.swift */; };
 		90928808EF4AE1E79E55AD9C /* WindowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C03115EC299F2AC648FAFF /* WindowCoordinator.swift */; };
 		999A8461E734D27E33585C3B /* OrganizationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6860446CA4D2F23508A53F51 /* OrganizationSettings.swift */; };
+		A2BACAE1387C55D25C256FB1 /* ClipboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4049539F08A1A661CBDAC6 /* ClipboardMonitor.swift */; };
 		A30746C36745478B8B715D8A /* ItemLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34875DC81F034674508D0F7 /* ItemLauncher.swift */; };
 		A82876A96F38BBC6333EEB0E /* StatusItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC4EBAF99F7792CB3ED8F33 /* StatusItemController.swift */; };
 		AC2D63505FFCC2E474C0F671 /* LauncherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66FDC4F926796FAC4E3A7FF /* LauncherViewModel.swift */; };
@@ -32,6 +36,7 @@
 		CEF96C592D1550A76241FDC9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E26AB73C2D46571AFD7C8 /* AppDelegate.swift */; };
 		D30D2633396F3B17E542AAEB /* ItemEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D155EAB19A4C5CE69D0358 /* ItemEditorView.swift */; };
 		EA39EED5C5F14FDE6390774F /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834D259C81B1E865AF314F59 /* Carbon.framework */; };
+		F466D55B888A865B980B4C52 /* WheelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D39966B69D3C37B36056BA /* WheelController.swift */; };
 		FD5E395DD943DD75092A1DED /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C04A59281E66D0543431BEE /* main.swift */; };
 		FDD896CB3119C343EF5C5137 /* ItemAdder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE5F536F20A5B3107642B78 /* ItemAdder.swift */; };
 /* End PBXBuildFile section */
@@ -41,6 +46,7 @@
 		0E3E26AB73C2D46571AFD7C8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0FE5F536F20A5B3107642B78 /* ItemAdder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemAdder.swift; sourceTree = "<group>"; };
 		13DDFEA64E79274B9C7DE13E /* HotKeyCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKeyCenter.swift; sourceTree = "<group>"; };
+		16E14E85033B2BE0087FCAC7 /* GlassSurface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassSurface.swift; sourceTree = "<group>"; };
 		1E30E8CAC99FAFE9410EF6B3 /* ItemTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTile.swift; sourceTree = "<group>"; };
 		2148DF99003A78D3ED3669CA /* QAHarness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QAHarness.swift; sourceTree = "<group>"; };
 		2991583357ADD5DD0234D794 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
@@ -50,21 +56,25 @@
 		6860446CA4D2F23508A53F51 /* OrganizationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationSettings.swift; sourceTree = "<group>"; };
 		6C1274B18C48B1976B557400 /* Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
 		70EAAF49A80E0BC02A3C0F7A /* QuickDock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickDock.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		776AF7FA61221BC3F1988FC9 /* WheelSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WheelSettings.swift; sourceTree = "<group>"; };
 		834D259C81B1E865AF314F59 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		8D4AA2F05E7F1A076270C026 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
 		92C03115EC299F2AC648FAFF /* WindowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowCoordinator.swift; sourceTree = "<group>"; };
 		962EB7446A238FB170E34751 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		9C04A59281E66D0543431BEE /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		B0D39966B69D3C37B36056BA /* WheelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WheelController.swift; sourceTree = "<group>"; };
 		B10093070188293F3A3CF08A /* SystemServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemServices.swift; sourceTree = "<group>"; };
 		B2ED283ECAAB998F1AA45D7B /* IconProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconProvider.swift; sourceTree = "<group>"; };
 		B417DB06A65145A86EE97D3E /* LauncherPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherPanel.swift; sourceTree = "<group>"; };
 		C66FDC4F926796FAC4E3A7FF /* LauncherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherViewModel.swift; sourceTree = "<group>"; };
 		D34875DC81F034674508D0F7 /* ItemLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemLauncher.swift; sourceTree = "<group>"; };
+		DE76DC4975828A5BD90F82E7 /* WheelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WheelView.swift; sourceTree = "<group>"; };
 		DF2B182D03AAA5F40D340EFC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		E59C4FC5BF75A7E772703D9D /* LauncherController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherController.swift; sourceTree = "<group>"; };
 		EDC4EBAF99F7792CB3ED8F33 /* StatusItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemController.swift; sourceTree = "<group>"; };
 		EFAEA2DBF17DBEB6045F7B56 /* ItemIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemIconView.swift; sourceTree = "<group>"; };
 		FC6FDB18FF186EAFC9FC1AF7 /* DataSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSettings.swift; sourceTree = "<group>"; };
+		FD4049539F08A1A661CBDAC6 /* ClipboardMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardMonitor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +94,7 @@
 		03714B4060D86BB8C63916D6 /* Integrations */ = {
 			isa = PBXGroup;
 			children = (
+				FD4049539F08A1A661CBDAC6 /* ClipboardMonitor.swift */,
 				13DDFEA64E79274B9C7DE13E /* HotKeyCenter.swift */,
 				B2ED283ECAAB998F1AA45D7B /* IconProvider.swift */,
 				0FE5F536F20A5B3107642B78 /* ItemAdder.swift */,
@@ -92,6 +103,7 @@
 				B417DB06A65145A86EE97D3E /* LauncherPanel.swift */,
 				EDC4EBAF99F7792CB3ED8F33 /* StatusItemController.swift */,
 				B10093070188293F3A3CF08A /* SystemServices.swift */,
+				B0D39966B69D3C37B36056BA /* WheelController.swift */,
 			);
 			path = Integrations;
 			sourceTree = "<group>";
@@ -106,6 +118,14 @@
 				92C03115EC299F2AC648FAFF /* WindowCoordinator.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		23B226AB7B1BF7EBF33DB865 /* Wheel */ = {
+			isa = PBXGroup;
+			children = (
+				DE76DC4975828A5BD90F82E7 /* WheelView.swift */,
+			);
+			path = Wheel;
 			sourceTree = "<group>";
 		};
 		3591B9DF62399C0F086F2B2D /* Sources */ = {
@@ -194,6 +214,7 @@
 				FC6FDB18FF186EAFC9FC1AF7 /* DataSettings.swift */,
 				6860446CA4D2F23508A53F51 /* OrganizationSettings.swift */,
 				DF2B182D03AAA5F40D340EFC /* SettingsView.swift */,
+				776AF7FA61221BC3F1988FC9 /* WheelSettings.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -214,6 +235,7 @@
 				A8EC07DF84788A6F7B7577FF /* Launcher */,
 				985A75B148B135FFDF271808 /* Onboarding */,
 				C6A30AB95BCB94CAAA823EE5 /* Settings */,
+				23B226AB7B1BF7EBF33DB865 /* Wheel */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -222,6 +244,7 @@
 			isa = PBXGroup;
 			children = (
 				6C1274B18C48B1976B557400 /* Controls.swift */,
+				16E14E85033B2BE0087FCAC7 /* GlassSurface.swift */,
 				EFAEA2DBF17DBEB6045F7B56 /* ItemIconView.swift */,
 			);
 			path = Components;
@@ -304,8 +327,10 @@
 			files = (
 				CEF96C592D1550A76241FDC9 /* AppDelegate.swift in Sources */,
 				B26942BF50F2E19C7FADFB94 /* AppEnvironment.swift in Sources */,
+				A2BACAE1387C55D25C256FB1 /* ClipboardMonitor.swift in Sources */,
 				6DC6DC13A53447B5037B0A26 /* Controls.swift in Sources */,
 				8B6EC04CB4ACCED2CAC427A4 /* DataSettings.swift in Sources */,
+				1DE5EB492115198ED996F436 /* GlassSurface.swift in Sources */,
 				4437BDB90BD6677EC419011A /* HotKeyCenter.swift in Sources */,
 				BBEA4D509E17794FE15F175C /* IconProvider.swift in Sources */,
 				FDD896CB3119C343EF5C5137 /* ItemAdder.swift in Sources */,
@@ -323,6 +348,9 @@
 				86C4456ADD6D08B8FB009303 /* SettingsView.swift in Sources */,
 				A82876A96F38BBC6333EEB0E /* StatusItemController.swift in Sources */,
 				5DE7BBEBBC2F9D0FF05768FD /* SystemServices.swift in Sources */,
+				F466D55B888A865B980B4C52 /* WheelController.swift in Sources */,
+				06C48F8D90F005F8BDE8DC3F /* WheelSettings.swift in Sources */,
+				3FE81D88709CF4F89DEB8B98 /* WheelView.swift in Sources */,
 				90928808EF4AE1E79E55AD9C /* WindowCoordinator.swift in Sources */,
 				FD5E395DD943DD75092A1DED /* main.swift in Sources */,
 			);
@@ -346,9 +374,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "io.github.sonal-jaiswal.QuickDock";
 				PRODUCT_NAME = QuickDock;
 				QD_COPYRIGHT = "© 2026 The QuickDock Authors. MIT License.";
-				QD_REPOSITORY_URL = "";
-				QD_SUPPORT_EMAIL = "";
-				QD_WEBSITE_URL = "";
+				QD_REPOSITORY_URL = "https://github.com/Sonal-Jaiswal/QuickDock";
+				QD_SUPPORT_EMAIL = "its.sonaljaiswal@gmail.com";
+				QD_WEBSITE_URL = "https://sonal-jaiswal.github.io/QuickDock";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -427,9 +455,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "io.github.sonal-jaiswal.QuickDock";
 				PRODUCT_NAME = QuickDock;
 				QD_COPYRIGHT = "© 2026 The QuickDock Authors. MIT License.";
-				QD_REPOSITORY_URL = "";
-				QD_SUPPORT_EMAIL = "";
-				QD_WEBSITE_URL = "";
+				QD_REPOSITORY_URL = "https://github.com/Sonal-Jaiswal/QuickDock";
+				QD_SUPPORT_EMAIL = "its.sonaljaiswal@gmail.com";
+				QD_WEBSITE_URL = "https://sonal-jaiswal.github.io/QuickDock";
 				SDKROOT = macosx;
 			};
 			name = Release;

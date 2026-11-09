@@ -27,6 +27,7 @@ final class WindowCoordinator: NSObject, NSWindowDelegate {
                 .environmentObject(env.icons)
                 .environmentObject(env.hotKeys)
                 .environmentObject(env.loginItem)
+                .environmentObject(env.clipboard)
             let window = makeWindow(title: "QuickDock Settings", size: NSSize(width: 760, height: 540),
                                     content: view, resizable: true)
             window.minSize = NSSize(width: 680, height: 460)

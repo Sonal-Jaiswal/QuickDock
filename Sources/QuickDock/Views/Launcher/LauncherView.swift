@@ -268,6 +268,9 @@ private struct LauncherFooter: View {
                 Button("Settings…") {
                     model.controller?.perform(reopenAfter: false) { model.env.windows.showSettings(); return nil }
                 }
+                Button("Open Quick Wheel") {
+                    model.controller?.perform(reopenAfter: false) { model.env.wheelController?.toggle(); return nil }
+                }
                 Button("Keyboard Shortcuts…") {
                     model.controller?.perform(reopenAfter: false) { model.env.windows.showSettings(section: .shortcuts); return nil }
                 }

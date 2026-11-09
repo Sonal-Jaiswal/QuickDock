@@ -11,6 +11,7 @@ actions you use most one click (or <kbd>⌥ Space</kbd>) away. It's private, wor
 </p>
 
 <p align="center"><img src="website/public/screenshots/launcher-dark.png" width="640" alt="The QuickDock launcher"></p>
+<p align="center"><img src="website/public/screenshots/wheel-dark.png" width="640" alt="The QuickDock Quick Wheel with clipboard history"></p>
 
 > **Early access, unsigned build.** QuickDock 0.9.0 is **not** signed with an Apple Developer ID and
 > **not** notarized by Apple. macOS will warn you the first time you open it. See [Installation](#installation).
@@ -18,6 +19,7 @@ actions you use most one click (or <kbd>⌥ Space</kbd>) away. It's private, wor
 ## Features
 
 - **Floating launcher.** A translucent panel (Liquid Glass on macOS 26+) appears on the display you're using, above your windows and over full-screen apps. Escape or a click outside closes it.
+- **Quick Wheel.** Hold ⌥Tab: favorites and most-used apps appear in a ring around the pointer. Flick and release to open or switch, like a game's weapon wheel. Recent clipboard text sits beside it (opt-in, local only, password-manager copies skipped).
 - **Menu bar and global shortcut.** Click the menu-bar icon or press ⌥Space, or any shortcut you record. QuickDock detects shortcut conflicts and falls back gracefully.
 - **Apps, files, folders, websites and actions.** Actions include copying a text snippet, starting a new email, Mission Control, Screenshot, Screen Saver, System Settings and QuickDock Settings.
 - **Organize.** Instant search, filters (All, Favorites, Apps, Files, Folders, Web, Actions), categories, favorites, custom names and icons, and drag-and-drop ordering.
@@ -73,8 +75,9 @@ Sources/QuickDock/         The macOS app
   App/                     main, AppDelegate, AppEnvironment, WindowCoordinator, QAHarness (Debug only)
   Integrations/            LauncherPanel/Controller, StatusItem, HotKeyCenter (Carbon), ItemLauncher,
                            IconProvider, ItemAdder, SystemServices (login item, app info)
-  Views/                   Launcher, Settings, Onboarding, Editor, Components
-Tests/QuickDockCoreTests/  72 tests across 13 suites
+  Integrations/WheelController, ClipboardMonitor   Quick Wheel and opt-in clipboard history
+  Views/                   Launcher, Wheel, Settings, Onboarding, Editor, Components
+Tests/QuickDockCoreTests/  89 tests across 16 suites
 Resources/                 Info.plist, entitlements, app icon
 scripts/                   build, test, DMG, icon, uninstall, website release sync
 website/                   Astro + Tailwind public website
