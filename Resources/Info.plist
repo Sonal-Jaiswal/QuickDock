@@ -9,7 +9,7 @@
 	<key>CFBundleIconFile</key>
 	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
-	<string>__BUNDLE_ID__</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -19,9 +19,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>__VERSION__</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
-	<string>__BUILD__</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>13.0</string>
 	<key>LSUIElement</key>
@@ -33,13 +33,13 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>© __YEAR__ __COPYRIGHT__. MIT License.</string>
+	<string>$(QD_COPYRIGHT)</string>
 	<key>QDRepositoryURL</key>
-	<string>__REPO_URL__</string>
+	<string>$(QD_REPOSITORY_URL)</string>
 	<key>QDWebsiteURL</key>
-	<string>__WEBSITE_URL__</string>
+	<string>$(QD_WEBSITE_URL)</string>
 	<key>QDSupportEmail</key>
-	<string>__SUPPORT_EMAIL__</string>
+	<string>$(QD_SUPPORT_EMAIL)</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -62,7 +62,7 @@
 	<array>
 		<dict>
 			<key>UTTypeIdentifier</key>
-			<string>__BUNDLE_ID__.configuration</string>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER).configuration</string>
 			<key>UTTypeDescription</key>
 			<string>QuickDock Configuration</string>
 			<key>UTTypeConformsTo</key>

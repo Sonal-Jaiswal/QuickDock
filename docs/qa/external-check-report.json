@@ -1,0 +1,37 @@
+{
+  "failed" : 0,
+  "macOS" : "Version 27.2 (Build 26B123)",
+  "passed" : 6,
+  "results" : [
+    {
+      "detail" : "2",
+      "name" : "External items persisted",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "available",
+      "name" : "External bookmark resolves after restart: Granted.txt",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "\/Users\/sonal\/Desktop\/DMGSS\/build\/qa-external\/Granted.txt",
+      "name" : "Scoped read works after restart: Granted.txt",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "available",
+      "name" : "External bookmark resolves after restart: Granted Folder",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "\/Users\/sonal\/Desktop\/DMGSS\/build\/qa-external\/Granted Folder",
+      "name" : "Scoped read works after restart: Granted Folder",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "\/Users\/sonal\/Desktop\/DMGSS\/build\/qa-external\/Ungranted.txt",
+      "name" : "Sandbox blocks a file the user never chose",
+      "result" : "PASS"
+    }
+  ]
+}

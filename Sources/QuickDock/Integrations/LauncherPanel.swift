@@ -43,6 +43,7 @@ enum LauncherBackground {
     static let cornerRadius: CGFloat = 22
 
     static func makeContainer(hosting content: NSView) -> NSView {
+        #if compiler(>=6.2) // macOS 26 SDK (Xcode 26) or newer
         if #available(macOS 26.0, *) {
             let glass = NSGlassEffectView()
             glass.cornerRadius = cornerRadius
@@ -57,6 +58,7 @@ enum LauncherBackground {
             glass.contentView = content
             return glass
         }
+        #endif
         let effect = NSVisualEffectView()
         effect.material = .popover
         effect.blendingMode = .behindWindow

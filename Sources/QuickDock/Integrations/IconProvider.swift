@@ -49,7 +49,8 @@ final class IconProvider: ObservableObject {
         switch item.target {
         case .application(let app):
             if FileManager.default.fileExists(atPath: app.path) {
-                return NSWorkspace.shared.icon(forFile: app.path)
+                // Resolve symlinks (e.g. /Applications/Safari.app) so the icon has no alias badge.
+                return NSWorkspace.shared.icon(forFile: URL(fileURLWithPath: app.path).resolvingSymlinksInPath().path)
             }
             if let bundleID = app.bundleIdentifier,
                let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundleID) {

@@ -15,6 +15,8 @@ let package = Package(
     platforms: [.macOS(.v13)],
     products: [
         .executable(name: "QuickDock", targets: ["QuickDock"]),
+        // Used by the Xcode project (project.yml) so the app target can link the core library.
+        .library(name: "QuickDockCore", targets: ["QuickDockCore"]),
     ],
     targets: [
         .target(

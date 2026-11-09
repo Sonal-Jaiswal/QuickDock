@@ -58,6 +58,10 @@ final class QAHarness {
             env.library.flush()
             return
         }
+        if phase == "launch" {
+            await launchCheck()
+            return
+        }
         if phase == "screenshots" {
             await screenshots()
             return
@@ -374,6 +378,37 @@ final class QAHarness {
         await pause(0.8)
         if let window = NSApp.windows.first(where: { $0.title == "Welcome to QuickDock" }) { capture(window, "shot-onboarding"); window.close() }
         env.preferences.appearance = .system
+    }
+
+    /// Opens a real app, file, folder and website through the same code path as a click.
+    private func launchCheck() async {
+        try? FileManager.default.createDirectory(at: fixtures.appendingPathComponent("Launch Folder"), withIntermediateDirectories: true)
+        let file = fixtures.appendingPathComponent("Launch Test.txt")
+        try? Data("Opened by the QuickDock QA harness.".utf8).write(to: file)
+        let textEditWasRunning = !NSRunningApplication.runningApplications(withBundleIdentifier: "com.apple.TextEdit").isEmpty
+        let calculatorWasRunning = !NSRunningApplication.runningApplications(withBundleIdentifier: "com.apple.calculator").isEmpty
+
+        var items: [LaunchItem] = []
+        if let calc = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.calculator") {
+            env.adder.add(urls: [calc, file, fixtures.appendingPathComponent("Launch Folder")])
+        }
+        if let site = try? env.factory.makeWebsite(address: ProcessInfo.processInfo.environment["QUICKDOCK_QA_URL"] ?? "https://example.com") {
+            env.library.add(site)
+        }
+        items = env.library.items
+        for item in items {
+            NSLog("QA: opening %@", item.name)
+            let outcome = await env.launcher.open(item)
+            NSLog("QA: finished %@ -> %@", item.name, "\(outcome)")
+            check("Open \(item.kind.rawValue) “\(item.name)”", outcome.succeeded, "\(outcome)")
+            await pause(1.0)
+        }
+        await pause(1.5)
+        check("Calculator is running after open", !NSRunningApplication.runningApplications(withBundleIdentifier: "com.apple.calculator").isEmpty, "")
+        check("TextEdit opened the file", !NSRunningApplication.runningApplications(withBundleIdentifier: "com.apple.TextEdit").isEmpty, "")
+        check("Open count recorded", env.library.items.allSatisfy { $0.openCount == 1 }, env.library.items.map { "\($0.openCount)" }.joined(separator: ","))
+        if !calculatorWasRunning { NSRunningApplication.runningApplications(withBundleIdentifier: "com.apple.calculator").forEach { $0.terminate() } }
+        if !textEditWasRunning { NSRunningApplication.runningApplications(withBundleIdentifier: "com.apple.TextEdit").forEach { $0.terminate() } }
     }
 
     // MARK: Helpers

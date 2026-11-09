@@ -1,0 +1,140 @@
+---
+import "../styles/global.css";
+import { site, asset, repoUrl, readmeUrl, contactEmail, releasesUrl } from "../config/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title, description = site.description } = Astro.props;
+const fullTitle = title ? `${title} · ${site.name}` : `${site.name} — ${site.tagline}`;
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+const ogImage = Astro.site ? new URL(asset("og-image.png"), Astro.site).href : asset("og-image.png");
+const year = new Date().getFullYear();
+const repo = repoUrl();
+const docs = readmeUrl();
+const email = contactEmail();
+const releases = releasesUrl();
+const nav = [
+  ["Features", "#features"],
+  ["Screenshots", "#screenshots"],
+  ["Install", "#install"],
+  ["Download", "#download"],
+  ["Support", "#support"],
+  ["FAQ", "#faq"],
+];
+const home = asset("");
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta name="theme-color" content="#0a0c12" />
+    <meta name="color-scheme" content="dark" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="QuickDock app icon next to a screenshot of the QuickDock launcher" />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" type="image/png" sizes="32x32" href={asset("favicon-32.png")} />
+    <link rel="icon" type="image/png" sizes="192x192" href={asset("icon-192.png")} />
+    <link rel="apple-touch-icon" href={asset("apple-touch-icon.png")} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      name: site.name,
+      operatingSystem: `${site.release.minimumMacOS} or later`,
+      applicationCategory: "UtilitiesApplication",
+      softwareVersion: site.release.version,
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+      description: site.description,
+    })} />
+  </head>
+  <body class="min-h-screen font-sans">
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-black">Skip to content</a>
+
+    <header class="sticky top-0 z-40 border-b border-white/5 bg-[#0a0c12]/75 backdrop-blur-xl">
+      <nav aria-label="Main" class="mx-auto flex h-16 max-w-6xl items-center gap-6 px-5">
+        <a href={home} class="flex items-center gap-2.5 font-semibold text-white">
+          <img src={asset("icon-192.png")} alt="" width="28" height="28" class="rounded-[7px]" />
+          QuickDock
+        </a>
+        <ul class="ml-auto hidden items-center gap-6 text-sm text-white/65 md:flex">
+          {nav.map(([label, href]) => (
+            <li><a class="transition hover:text-white" href={`${home}${href}`}>{label}</a></li>
+          ))}
+        </ul>
+        <a href={`${home}#download`} class="ml-auto rounded-full bg-[var(--color-accent-strong)] px-4 py-1.5 text-sm font-medium text-white transition hover:brightness-110 md:ml-0">Download</a>
+      </nav>
+      <details class="border-t border-white/5 md:hidden">
+        <summary class="mx-auto flex max-w-6xl items-center justify-between px-5 py-2 text-sm text-white/70">
+          Menu <span class="chevron transition">›</span>
+        </summary>
+        <ul class="mx-auto grid max-w-6xl grid-cols-2 gap-2 px-5 pb-4 text-sm">
+          {nav.map(([label, href]) => (
+            <li><a class="block rounded-lg px-3 py-2 text-white/75 hover:bg-white/5" href={`${home}${href}`}>{label}</a></li>
+          ))}
+        </ul>
+      </details>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="mt-24 border-t border-white/5">
+      <div class="mx-auto grid max-w-6xl gap-10 px-5 py-12 sm:grid-cols-2 lg:grid-cols-4">
+        <div>
+          <a href={home} class="flex items-center gap-2.5 font-semibold text-white">
+            <img src={asset("icon-192.png")} alt="" width="28" height="28" class="rounded-[7px]" />
+            QuickDock
+          </a>
+          <p class="mt-3 text-sm text-white/55">{site.tagline}<br />An independent, self-funded project.</p>
+        </div>
+        <div>
+          <h2 class="text-sm font-semibold text-white">Product</h2>
+          <ul class="mt-3 space-y-2 text-sm text-white/60">
+            <li><a class="hover:text-white" href={`${home}#features`}>Features</a></li>
+            <li><a class="hover:text-white" href={`${home}#download`}>Download</a></li>
+            <li><a class="hover:text-white" href={`${home}#install`}>Installation</a></li>
+            <li><a class="hover:text-white" href={`${home}#uninstall`}>Uninstall</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-sm font-semibold text-white">Project</h2>
+          <ul class="mt-3 space-y-2 text-sm text-white/60">
+            {repo && <li><a class="hover:text-white" href={repo}>GitHub repository</a></li>}
+            {docs && <li><a class="hover:text-white" href={docs}>Documentation</a></li>}
+            {releases && <li><a class="hover:text-white" href={releases}>Release notes</a></li>}
+            {email && <li><a class="hover:text-white" href={`mailto:${email}`}>{email}</a></li>}
+            <li><a class="hover:text-white" href={`${home}#support`}>Support the project</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-sm font-semibold text-white">Legal</h2>
+          <ul class="mt-3 space-y-2 text-sm text-white/60">
+            <li><a class="hover:text-white" href={asset("privacy/")}>Privacy policy</a></li>
+            <li><a class="hover:text-white" href={asset("license/")}>License (MIT)</a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="mx-auto max-w-6xl px-5 pb-10 text-xs text-white/40">
+        © {year} The QuickDock Authors. QuickDock is not affiliated with or endorsed by Apple Inc. Mac and macOS are trademarks of Apple Inc.
+      </p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,52 @@
+{
+  "failed" : 0,
+  "macOS" : "Version 27.2 (Build 26B123)",
+  "passed" : 9,
+  "results" : [
+    {
+      "detail" : "12",
+      "name" : "Items persisted across restart",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "Favorite persisted",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "Category persisted",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "Notes",
+      "name" : "Order persisted (dragged item first)",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "available",
+      "name" : "Bookmark resolves after restart: Quarterly Report.txt",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "\/Users\/sonal\/Library\/Containers\/io.github.sonal-jaiswal.QuickDock\/Data\/tmp\/quickdock-qa\/fixtures\/Quarterly Report.txt",
+      "name" : "Scoped access works after restart: Quarterly Report.txt",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "available",
+      "name" : "Bookmark resolves after restart: Project Folder",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "\/Users\/sonal\/Library\/Containers\/io.github.sonal-jaiswal.QuickDock\/Data\/tmp\/quickdock-qa\/fixtures\/Project Folder",
+      "name" : "Scoped access works after restart: Project Folder",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "Preferences persisted across restart",
+      "result" : "PASS"
+    }
+  ]
+}

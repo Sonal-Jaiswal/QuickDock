@@ -1,0 +1,327 @@
+{
+  "failed" : 0,
+  "macOS" : "Version 27.2 (Build 26B123)",
+  "passed" : 47,
+  "results" : [
+    {
+      "detail" : "status bar windows: 1",
+      "name" : "Single menu-bar status item exists",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "io.github.sonal-jaiswal.QuickDock",
+      "name" : "Sandbox active",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "1 display(s)",
+      "name" : "Displays detected",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "registered",
+      "name" : "Register ⌥Space via Carbon",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "status -9878",
+      "name" : "Duplicate hotkey registration is rejected",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "registered(QuickDockCore.KeyCombo(keyCode: 40, modifiers: QuickDockCore.KeyCombo.Modifiers(rawValue: 7)))",
+      "name" : "Replace shortcut with ⌃⌥⌘K",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "registered(QuickDockCore.KeyCombo(keyCode: 40, modifiers: QuickDockCore.KeyCombo.Modifiers(rawValue: 7)))",
+      "name" : "Invalid shortcut ⌘Q refused and previous kept",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "Added 9 items.",
+      "name" : "Add apps, file and folder",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "“Quarterly Report.txt” is already in QuickDock.",
+      "name" : "Duplicate item rejected",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "12",
+      "name" : "Library contains 12 items",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "Security-scoped bookmark created for file",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "available",
+      "name" : "File resolves as available",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "available",
+      "name" : "Resolve file “Quarterly Report.txt”",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "available",
+      "name" : "Resolve folder “Project Folder”",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "available",
+      "name" : "Resolve application “Safari”",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "available",
+      "name" : "Resolve application “Notes”",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "available",
+      "name" : "Resolve application “Calendar”",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "available",
+      "name" : "Resolve application “Mail”",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "available",
+      "name" : "Resolve application “TextEdit”",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "available",
+      "name" : "Resolve application “Music”",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "available",
+      "name" : "Resolve application “Terminal”",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "available",
+      "name" : "Resolve website “Apple Developer”",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "available",
+      "name" : "Resolve action “Sign-off”",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "available",
+      "name" : "Resolve action “Mission Control”",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "Launcher visible",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "key=true active=true",
+      "name" : "Launcher is key without activating QuickDock",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "panel (423.0, 266.0, 624.0, 480.0) screen (0.0, 0.0, 1470.0, 923.0)",
+      "name" : "Launcher centred horizontally on its display",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "level 3",
+      "name" : "Launcher above normal windows",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "Launcher joins full-screen spaces",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "window server",
+      "name" : "capture launcher-all",
+      "result" : "INFO"
+    },
+    {
+      "detail" : "",
+      "name" : "→ moves selection",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "↓ moves by one row",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "text=saf first=Safari",
+      "name" : "Typing filters results",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "window server",
+      "name" : "capture launcher-search",
+      "result" : "INFO"
+    },
+    {
+      "detail" : "",
+      "name" : "Escape clears search first",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "favorites",
+      "name" : "Tab switches to Favorites",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "7",
+      "name" : "Apps filter",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "window server",
+      "name" : "capture launcher-apps",
+      "result" : "INFO"
+    },
+    {
+      "detail" : "",
+      "name" : "Web filter",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "1",
+      "name" : "Category filter",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "Snippet action copies text",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "missing",
+      "name" : "Deleted file reported missing",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "Missing file shows recovery banner",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "view render (no backdrop)",
+      "name" : "capture launcher-missing",
+      "result" : "INFO"
+    },
+    {
+      "detail" : "",
+      "name" : "Uninstalled app detected",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "Drag reorder updates library order",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "view render (no backdrop)",
+      "name" : "capture launcher-no-results",
+      "result" : "INFO"
+    },
+    {
+      "detail" : "",
+      "name" : "Launcher closes when another window takes focus",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "window server",
+      "name" : "capture settings-general",
+      "result" : "INFO"
+    },
+    {
+      "detail" : "window server",
+      "name" : "capture settings-appearance",
+      "result" : "INFO"
+    },
+    {
+      "detail" : "window server",
+      "name" : "capture settings-launcher",
+      "result" : "INFO"
+    },
+    {
+      "detail" : "window server",
+      "name" : "capture settings-shortcuts",
+      "result" : "INFO"
+    },
+    {
+      "detail" : "window server",
+      "name" : "capture settings-organization",
+      "result" : "INFO"
+    },
+    {
+      "detail" : "window server",
+      "name" : "capture settings-data",
+      "result" : "INFO"
+    },
+    {
+      "detail" : "window server",
+      "name" : "capture settings-about",
+      "result" : "INFO"
+    },
+    {
+      "detail" : "",
+      "name" : "Settings window opened",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "Preferences persist to defaults",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "window server",
+      "name" : "capture launcher-dark",
+      "result" : "INFO"
+    },
+    {
+      "detail" : "window server",
+      "name" : "capture launcher-light",
+      "result" : "INFO"
+    },
+    {
+      "detail" : "12 items",
+      "name" : "Export\/import round trip",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "window server",
+      "name" : "capture editor-website",
+      "result" : "INFO"
+    },
+    {
+      "detail" : "window server",
+      "name" : "capture editor-action",
+      "result" : "INFO"
+    },
+    {
+      "detail" : "window server",
+      "name" : "capture onboarding-welcome",
+      "result" : "INFO"
+    },
+    {
+      "detail" : "\/Users\/sonal\/Library\/Containers\/io.github.sonal-jaiswal.QuickDock\/Data\/tmp\/quickdock-qa\/data\/library.json",
+      "name" : "Library written to disk",
+      "result" : "PASS"
+    }
+  ]
+}

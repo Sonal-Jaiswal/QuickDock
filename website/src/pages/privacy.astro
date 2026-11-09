@@ -1,0 +1,37 @@
+---
+import Base from "../layouts/Base.astro";
+import { contactEmail, issuesUrl } from "../config/site";
+const email = contactEmail();
+const issues = issuesUrl();
+---
+<Base title="Privacy Policy" description="QuickDock collects no personal data. Everything stays on your Mac.">
+  <article class="mx-auto max-w-3xl px-5 pt-16 leading-relaxed text-white/70 [&_h2]:mt-10 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-white [&_p]:mt-3 [&_li]:mt-1.5">
+    <h1 class="section-title text-4xl font-semibold text-white">Privacy Policy</h1>
+    <p class="text-sm text-white/45">Last updated: November 9, 2026</p>
+
+    <h2>The short version</h2>
+    <p>QuickDock does not collect, transmit, sell or share any personal data. It has no account system, no analytics, no advertising and no cloud service.</p>
+
+    <h2>The QuickDock app</h2>
+    <ul class="list-disc pl-5">
+      <li><strong class="text-white">No network access.</strong> QuickDock runs in the macOS App Sandbox without the network entitlement, so it cannot connect to the internet. Websites you add are opened by your own web browser.</li>
+      <li><strong class="text-white">Local storage only.</strong> Your items, categories and custom icons are stored in QuickDock’s sandbox container on your Mac (<code>~/Library/Containers/io.github.sonal-jaiswal.QuickDock</code>). Preferences are stored in the same container.</li>
+      <li><strong class="text-white">Access only to what you choose.</strong> QuickDock can open only files and folders you select or drop onto it. To keep that access between launches it stores a macOS “security-scoped bookmark” for each one, on your Mac.</li>
+      <li><strong class="text-white">No special permissions.</strong> QuickDock does not request Accessibility, Full Disk Access, Screen Recording, Input Monitoring, Contacts, Location, Camera or Microphone access.</li>
+      <li><strong class="text-white">Exports stay with you.</strong> “Export Configuration…” writes a file only where you choose. It contains item names, paths, website addresses and settings — treat it like any personal file.</li>
+      <li><strong class="text-white">No telemetry.</strong> QuickDock does not send crash reports, usage statistics or diagnostics. (If you have enabled Apple’s own “Share Mac Analytics”, macOS may share crash data with Apple and app developers under Apple’s policy; QuickDock receives nothing from this today.)</li>
+    </ul>
+
+    <h2>This website</h2>
+    <p>This website is a static site. It sets no cookies, uses no analytics or tracking scripts and loads no third-party fonts. The hosting provider (for example GitHub Pages) may keep standard server logs, such as IP addresses, for security and operations under its own privacy policy.</p>
+    <p>Downloads are served by GitHub Releases, and donations (if you choose to make one) are handled entirely by the donation provider under its own privacy policy. QuickDock never receives your payment details.</p>
+
+    <h2>Changes</h2>
+    <p>If this policy changes, the updated version will be published here with a new date.</p>
+
+    <h2>Contact</h2>
+    {email ? <p>Questions? Write to <a class="text-[var(--color-accent)] hover:underline" href={`mailto:${email}`}>{email}</a>.</p>
+      : issues ? <p>Questions? <a class="text-[var(--color-accent)] hover:underline" href={issues}>Open an issue on GitHub</a>.</p>
+      : <p>Contact details will be added here once the project’s public channels are set up.</p>}
+  </article>
+</Base>

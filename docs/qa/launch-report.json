@@ -1,0 +1,42 @@
+{
+  "failed" : 0,
+  "macOS" : "Version 27.2 (Build 26B123)",
+  "passed" : 7,
+  "results" : [
+    {
+      "detail" : "opened",
+      "name" : "Open application “Calculator”",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "opened",
+      "name" : "Open file “Launch Test.txt”",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "opened",
+      "name" : "Open folder “Launch Folder”",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "opened",
+      "name" : "Open website “localhost”",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "Calculator is running after open",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "TextEdit opened the file",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "1,1,1,1",
+      "name" : "Open count recorded",
+      "result" : "PASS"
+    }
+  ]
+}

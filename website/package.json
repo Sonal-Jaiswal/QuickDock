@@ -1,0 +1,20 @@
+{
+  "name": "quickdock-website",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "The official QuickDock website (static, Astro + Tailwind).",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/check": "0.9.12",
+    "@astrojs/sitemap": "3.7.4",
+    "@tailwindcss/vite": "4.3.5",
+    "astro": "7.4.7",
+    "tailwindcss": "4.3.5",
+    "typescript": "6.0.3"
+  }
+}

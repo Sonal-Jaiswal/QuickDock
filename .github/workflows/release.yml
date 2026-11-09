@@ -1,0 +1,97 @@
+name: Release
+
+# Push a tag such as v0.9.0 (matching the VERSION file) to publish a release.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-26
+    env:
+      # Secrets can't be used in `if:` directly; expose whether they exist instead.
+      HAS_SIGNING: ${{ secrets.DEVELOPER_ID_P12_BASE64 != '' }}
+      HAS_NOTARY: ${{ secrets.NOTARY_APPLE_ID != '' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check tag matches VERSION
+        run: |
+          VERSION="$(tr -d '[:space:]' < VERSION)"
+          if [[ "${GITHUB_REF_NAME}" != "v${VERSION}" ]]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} does not match VERSION ${VERSION}"
+            exit 1
+          fi
+          echo "VERSION=${VERSION}" >> "$GITHUB_ENV"
+
+      - name: Unit tests
+        run: scripts/test.sh
+
+      # --- Optional Developer ID signing --------------------------------------
+      # Runs only when the signing secrets exist (see docs/SIGNING.md).
+      # Without them the release is an unsigned (ad-hoc) early-access build.
+      - name: Import Developer ID certificate
+        if: env.HAS_SIGNING == 'true'
+        env:
+          P12_BASE64: ${{ secrets.DEVELOPER_ID_P12_BASE64 }}
+          P12_PASSWORD: ${{ secrets.DEVELOPER_ID_P12_PASSWORD }}
+        run: |
+          KEYCHAIN="$RUNNER_TEMP/signing.keychain-db"
+          KEYCHAIN_PASSWORD="$(uuidgen)"
+          echo "$P12_BASE64" | base64 --decode > "$RUNNER_TEMP/cert.p12"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          security import "$RUNNER_TEMP/cert.p12" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN"
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          security list-keychains -d user -s "$KEYCHAIN" $(security list-keychains -d user | tr -d '"')
+          rm "$RUNNER_TEMP/cert.p12"
+          echo "SIGN_IDENTITY=${{ secrets.DEVELOPER_ID_IDENTITY }}" >> "$GITHUB_ENV"
+
+      - name: Build app
+        run: BUILD_NUMBER="${{ github.run_number }}" scripts/build-app.sh
+
+      - name: Package DMG
+        run: scripts/make-dmg.sh
+
+      - name: Notarize and staple
+        if: env.HAS_NOTARY == 'true' && env.HAS_SIGNING == 'true'
+        env:
+          APPLE_ID: ${{ secrets.NOTARY_APPLE_ID }}
+          TEAM_ID: ${{ secrets.NOTARY_TEAM_ID }}
+          APP_PASSWORD: ${{ secrets.NOTARY_APP_PASSWORD }}
+        run: |
+          DMG="dist/QuickDock-${VERSION}-arm64.dmg"
+          xcrun notarytool submit "$DMG" --apple-id "$APPLE_ID" --team-id "$TEAM_ID" --password "$APP_PASSWORD" --wait
+          xcrun stapler staple "$DMG"
+          (cd dist && shasum -a 256 "QuickDock-${VERSION}-arm64.dmg" > "QuickDock-${VERSION}-arm64.dmg.sha256")
+
+      - name: Release notes from CHANGELOG
+        run: |
+          awk -v v="$VERSION" '
+            $0 ~ "^## \\[" v "\\]" { found=1; next }
+            found && /^## \[/ { exit }
+            found { print }
+          ' CHANGELOG.md > "$RUNNER_TEMP/notes.md"
+          if [[ -z "${SIGN_IDENTITY:-}" ]]; then
+            cat >> "$RUNNER_TEMP/notes.md" <<'NOTE'
+
+          ---
+          **Unsigned early-access build.** This release is not signed with an Apple Developer ID and has not been notarized by Apple. macOS will warn you the first time you open it — see the installation guide in the README. Verify the download with the `.sha256` file.
+          NOTE
+          fi
+          echo "SHA-256: \`$(cut -d' ' -f1 dist/*.sha256)\`" >> "$RUNNER_TEMP/notes.md"
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PRERELEASE=""
+          [[ "$VERSION" == 0.* ]] && PRERELEASE="--prerelease"
+          gh release create "$GITHUB_REF_NAME" dist/*.dmg dist/*.sha256 \
+            --title "QuickDock ${VERSION}" --notes-file "$RUNNER_TEMP/notes.md" $PRERELEASE

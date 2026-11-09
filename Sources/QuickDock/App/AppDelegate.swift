@@ -25,7 +25,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         #if DEBUG
         if QAHarness.isEnabled {
             let phase = ProcessInfo.processInfo.environment["QUICKDOCK_QA_PHASE"] ?? "full"
-            if phase == "full" || phase == "external-add" || phase == "screenshots" {
+            if phase == "full" || phase == "external-add" || phase == "screenshots" || phase == "launch" {
                 QAHarness.prepareIsolatedStorage()
             }
             let defaults = UserDefaults(suiteName: QAHarness.defaultsSuite)!

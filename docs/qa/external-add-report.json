@@ -1,0 +1,22 @@
+{
+  "failed" : 0,
+  "macOS" : "Version 27.2 (Build 26B123)",
+  "passed" : 3,
+  "results" : [
+    {
+      "detail" : "Granted.txt, Granted Folder",
+      "name" : "Files outside the sandbox were added via Open With",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "Security-scoped bookmark created: Granted.txt",
+      "result" : "PASS"
+    },
+    {
+      "detail" : "",
+      "name" : "Security-scoped bookmark created: Granted Folder",
+      "result" : "PASS"
+    }
+  ]
+}
