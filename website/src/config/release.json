@@ -1,27 +1,14 @@
 {
-  "version": "0.9.0",
+  "version": "0.9.1",
   "date": "2026-11-09",
-  "fileName": "QuickDock-0.9.0-arm64.dmg",
-  "sizeBytes": 2852440,
-  "sha256": "93eba69c76c1eb5130e9eb94d7176a7f5fe6915799db3fe7214ecfbaef634d33",
+  "fileName": "QuickDock-0.9.1-arm64.dmg",
+  "sizeBytes": 2868326,
+  "sha256": "b4826d6fafa8620d6705455972a1b7802e57bc4157bfedacdfd27386d514f853",
   "minimumMacOS": "macOS 13 Ventura",
   "architectures": "Apple Silicon (arm64)",
   "signed": false,
   "notes": [
-    "Quick Wheel: hold ⌥Tab and a ring of your favorite and most-used apps appears around the pointer. Flick and release to open or switch, tap to click, press Tab again to cycle, or press 1–9.",
-    "Optional clipboard history beside the wheel. It's text only, stays on your Mac, skips password-manager copies, supports pinning, and saves to disk only if you choose.",
-    "Floating launcher panel with Liquid Glass on macOS 26 and later, centred on the display with the pointer.",
-    "Menu-bar icon: click to open the launcher, right-click for favorites, adding items, Settings and Quit.",
-    "Global keyboard shortcut (default ⌥Space) with conflict detection, automatic fallback and a shortcut recorder.",
-    "Apps, files, folders, websites and built-in actions: copy a text snippet, new email, Mission Control, Screenshot, Screen Saver, System Settings.",
-    "Instant search, type filters, favorites, categories, custom names and custom icons (SF Symbols or images).",
-    "Drag-and-drop reordering, plus adding by dropping files and links onto the launcher or the app icon.",
-    "Keyboard navigation: arrow keys, Return, ⌘Return, ⌘1–⌘9, Tab, ⌘E, ⌘D and Escape.",
-    "Clear states for missing files and uninstalled apps, with Locate… and Remove.",
-    "Settings: General, Appearance, Launcher, Shortcuts, Organization, Data and About.",
-    "Configuration export and import (merge or replace) with validation, plus Restore File Access.",
-    "Optional Open at Login.",
-    "First-launch onboarding.",
-    "App Sandbox with no network access. Security-scoped bookmarks keep access to the files you choose."
+    "Quick Wheel: the hold now follows the ⌥ key, not Tab. Before, letting Tab up a moment late closed the wheel, letting go of ⌥ didn't open the chosen app, and tapping Tab again to cycle closed the wheel.",
+    "The wheel's buttons no longer take keyboard focus, so pressing Space can't clear the clipboard history by accident."
   ]
 }

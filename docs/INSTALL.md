@@ -11,7 +11,7 @@ QuickDock — once. You should never disable Gatekeeper for your whole Mac.
 - Optional but recommended — verify the checksum in Terminal and compare it with the `.sha256` file on the release page:
 
   ```sh
-  shasum -a 256 ~/Downloads/QuickDock-0.9.0-arm64.dmg
+  shasum -a 256 ~/Downloads/QuickDock-0.9.1-arm64.dmg
   ```
 
 ## 2. Install

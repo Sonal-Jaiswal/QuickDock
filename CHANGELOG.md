@@ -3,9 +3,7 @@
 All notable changes to QuickDock are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and QuickDock uses [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
-
-## [Unreleased]
+## [0.9.1] - 2026-11-09
 
 ### Fixed
 - Quick Wheel: the hold now follows the ⌥ key, not Tab. Before, letting Tab up a moment late closed the wheel, letting go of ⌥ didn't open the chosen app, and tapping Tab again to cycle closed the wheel.

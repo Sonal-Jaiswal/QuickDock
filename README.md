@@ -13,7 +13,7 @@ actions you use most one click (or <kbd>⌥ Space</kbd>) away. It's private, wor
 <p align="center"><img src="website/public/screenshots/launcher-dark.png" width="640" alt="The QuickDock launcher"></p>
 <p align="center"><img src="website/public/screenshots/wheel-dark.png" width="640" alt="The QuickDock Quick Wheel with clipboard history"></p>
 
-> **Early access, unsigned build.** QuickDock 0.9.0 is **not** signed with an Apple Developer ID and
+> **Early access, unsigned build.** QuickDock 0.9.1 is **not** signed with an Apple Developer ID and
 > **not** notarized by Apple. macOS will warn you the first time you open it. See [Installation](#installation).
 
 ## Features
@@ -36,7 +36,7 @@ actions you use most one click (or <kbd>⌥ Space</kbd>) away. It's private, wor
 ## Installation
 
 1. Download `QuickDock-<version>-arm64.dmg` from the GitHub **Releases** page and, ideally, check its checksum:
-   `shasum -a 256 ~/Downloads/QuickDock-0.9.0-arm64.dmg`
+   `shasum -a 256 ~/Downloads/QuickDock-0.9.1-arm64.dmg`
 2. Open the DMG and drag **QuickDock** to **Applications**.
 3. Open QuickDock. Because it isn't notarized, macOS blocks it the first time:
    - **macOS 15 Sequoia and later:** click **Done** in the warning, open **System Settings › Privacy & Security**, click **Open Anyway** next to QuickDock, and confirm.
